@@ -140,10 +140,10 @@ We evaluate our approach using realistic \sentinelii satellite imagery and show 
 \section{Introduction}
 
 Earth observation using sensor data acquired by satellites has gained more and more attention over the last years.
-Common use cases include environment monitoring, disaster management, and many more.
+Common use cases include environment monitoring \cite{rs14030589}, disaster management \cite{barmpoutis2020}, and many more \cite{radix,MarCO}.
 The increasing momentum can be explained by two major factors.
 First, technological advances have allowed to build smaller satellite classes, which use more off-the-shelf components and can be deployed more easily.
-A prime example are CubeSats, which operate in \ac{leo} and consist of $10 \times 10 \times 10$\,cm units.
+A prime example are CubeSats, which operate in \ac{leo} and consist of $10 \times 10 \times 10$\,cm units \cite{cubesat2020}.
 Second, sensor technology has improved greatly.
 Besides higher resolution, modern sensors support a wider spectrum range, exceeding visible light.
 Hyper-spectral images include infrared and other bands, which allow help in monitoring vegetation and clouds, amongst others.
@@ -151,17 +151,17 @@ Hyper-spectral images include infrared and other bands, which allow help in moni
 These advances, however, are not met by an equal improvement in communication capacity.
 CubeSats and other small satellites have a constrained energy budget, and -- unlike their larger counterparts -- they are not geo-stationary.
 That is, they orbit the Earth several times per day with high speed, limiting communication with ground stations to several small communication windows.
-Their high velocity and interferences due to harsh weather and potential non line-of-sight conditions further lead to high packet loss rates and complicate communication.
+Their high velocity and interferences due to harsh weather and potential non line-of-sight conditions further lead to high packet loss rates and complicate communication \cite{nogales2018}.
 
 Therefore, efficient coding schemes are a necessity to support demanding Earth observation applications.
-Source coding is used to compress sensor images, often using lossy compression schemes, such as \jpegtwok.
-Channel coding is then used to enable error correction and counteract packet loss due to the harsh channel conditions.
+Source coding serves to compress sensor images, often using lossy compression schemes, such as \jpegtwok \cite{sentinel-2-user-handbook}.
+Channel coding (e.g., \ac{ldpc}) is then used to enable error correction and counteract packet loss due to the harsh channel conditions.
 However, the clearly defined use cases can be used as an advantage, enabling a more data-centric networking approach:
-rather than independently considering source and channel coding, both can be optimized jointly.
-Whereas Shannon's theory states that separate optimization should yield optimal results, this is not true in practice due to hypothetical assumptions, such as infinite code block lengths.
+rather than independently considering source and channel coding, both can be optimized jointly, promising better performance \cite{6408177}.
+Whereas Shannon's theory \cite{cover1991elements} states that separate optimization should yield optimal results, this is not true in practice due to hypothetical assumptions, such as infinite code block lengths.
 
-Recently, the use of neuronal networks has provided a feasible way to implement a joint coding approach, improving over earlier work, which often used prohibitively complex mechanisms.
-Neuronal-network based joint coding approaches have been proposed for both terrestrial communication and satellite applications.
+Recently, the use of neuronal networks has provided a feasible way to implement a joint coding approach, improving over earlier work, which often used prohibitively complex mechanisms \cite{9838671}.
+Neuronal-network based joint coding approaches have been proposed for both terrestrial communication \cite{Bourtsoulatze2019} and satellite applications \cite{satjscc}.
 These use an encoder-decoder architecture to directly map the raw image sensor data to channel symbols, combining source coding, channel coding, and modulation.
 A major limitation has been so far that the joint encoder and decoder has been trained based on fixed assumptions about channel characteristics, such as the \ac{snr} based on a simple \ac{awgn} channel model.
 To accommodate changing channel conditions, separate neuronal networks are trained independently.
@@ -228,8 +228,6 @@ Identisch zu LCN23
 
 \section{Conclusion}
 \label{sec:conclusion}
-
-\nocite{satjscc}
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
