@@ -88,6 +88,11 @@
   long = {joint source-and-channel coding for small satellite applications}
 }
 
+\DeclareAcronym{los}{
+  short = {LOS},
+  long = {line of sight}
+}
+
 \usepackage{xspace}
 \newcommand\cubesat{CubeSat\xspace}
 \newcommand\cubesats{\cubesat{}s\xspace}
@@ -129,17 +134,68 @@
 
 \acresetall
 \section{Introduction}
-\begin{itemize}
-  \item LCN23
-  \item Channel models for satellites
-  \item Markov Chains to model different states, many parameters
-  \item Attention Modules
-\end{itemize}
 
+Earth observation using sensor data acquired by satellites has gained more and more attention over the last years.
+Common use cases include environment monitoring, disaster management, and many more.
+The increasing momentum can be explained by two major factors.
+First, technological advances have allowed to build smaller satellite classes, which use more off-the-shelf components and can be deployed more easily.
+A prime example are CubeSats, which operate in \ac{leo} and consist of $10 \times 10 \times 10$\,cm units.
+Second, sensor technology has improved greatly.
+Besides higher resolution, modern sensors support a wider spectrum range, exceeding visible light.
+Hyper-spectral images include infrared and other bands, which allow help in monitoring vegetation and clouds, amongst others.
 
+These advances, however, are not met by an equal improvement in communication capacity.
+CubeSats and other small satellites have a constrained energy budget, and -- unlike their larger counterparts -- they are not geo-stationary.
+That is, they orbit the Earth several times per day with high speed, limiting communication with ground stations to several small communication windows.
+Their high velocity and interferences due to harsh weather and potential non line-of-sight conditions further lead to high packet loss rates and complicate communication.
+
+Therefore, efficient coding schemes are a necessity to support demanding Earth observation applications.
+Source coding is used to compress sensor images, often using lossy compression schemes, such as \jpegtwok.
+Channel coding is then used to enable error correction and counteract packet loss due to the harsh channel conditions.
+However, the clearly defined use cases can be used as an advantage, enabling a more data-centric networking approach:
+rather than independently considering source and channel coding, both can be optimized jointly.
+Whereas Shannon's theory states that separate optimization should yield optimal results, this is not true in practice due to hypothetical assumptions, such as infinite code block lengths.
+
+Recently, the use of neuronal networks has provided a feasible way to implement a joint coding approach, improving over earlier work, which often used prohibitively complex mechanisms.
+Neuronal-network based joint coding approaches have been proposed for both terrestrial communication and satellite applications.
+These use an encoder-decoder architecture to directly map the raw image sensor data to channel symbols, combining source coding, channel coding, and modulation.
+A major limitation has been so far that the joint encoder and decoder has been trained based on fixed assumptions about channel characteristics, such as the \ac{snr} based on a simple \ac{awgn} channel model.
+To accommodate changing channel conditions, separate neuronal networks are trained independently.
+Depending on the current channel conditions, the sender and receiver then switch between these separate models.
+Obviously, this approach restricts the total number of networks to just a few, and therefore, limits the underling channel model to a limited number of scenarios.
+Considering more complex channel models including multi-path propagation, shadowing, and fading would easily lead to a combinatorial explosion of parameters, and consequently a prohibitive amount of separate neuronal networks for different channel conditions.
+
+In this paper, we propose a novel joint coding approach for satellite applications that allows to use a single neuronal network for a wide range of channel conditions typical for small satellite applications.
+We use a neuronal network model architecture that is enriched by so-called attention modules to reduce the combinatorial complexity.
+Using this architecture, we can train a single neuronal network based on a number of different channel conditions.
+During operation, the attention modules allow to essentially parametrize the network for different actual channel conditions.
+This parametrization allows us to consider a wide range of realistic channel conditions for small satellite applications.
+Namely, we use Fontán et al.'s channel model, which is applicable to non-geostationary small satellites and models a number of channel characteristics, such as multi-path propagation and shadowing.
+More specifically, we consider three scenarios -- \ac{los}, shadowing, and deep shadowing -- to capture different extents of multi-path propagation and shadowing effects.
+In addition, we consider different levels of \ac{snr} to model satellite elevation angles and other parameters.
+During training of the neuronal network, these parameters are used as input, in addition to a wide range of example satellite images.
+Whereas a traditional encoder-decoder network would then -- simply speaking -- learn a coding scheme for the \enquote{average} of all parameters, the attention modules allow to embed schemes for all parameters within a single network that can be dynamically parameterized with the actual channel conditions during use.
+Although the resulting network is larger than one trained for a specific set of channel conditions, it is considerably smaller than considering a set of separate networks, one for each channel condition.
+
+Our evaluation using a set of hyper-spectral images from the \sentinelii mission shows that our approach performs as good as separate, individual networks for different channel conditions while requiring significantly lower storage overhead.
+
+Thus, our main contributions can be summarized as follows:
+%
+\begin{enumerate}
+  \item We combine \ac{jscc} approaches with a realistic channel model for small satellite applications.
+  \item We apply an attention-module-augmented neuronal network architecture to be able to use a single network for a wide range of realistic channel characteristics.
+  \item We evaluate our approach using a set of realistic \sentinelii Earth observation data.
+\end{enumerate}
+
+The remainder of this paper is organized as follows.
+In \Cref{sec:related_work}, we review existing work on \ac{jscc}, source coding, channel models, and attention modules.
+Next, we provide an overview of our system model in \Cref{sec:system_model} before explaining our mechanism in detail in \Cref{sec:our_approach}.
+\Cref{sec:evaluation} details our evaluation results using \sentinelii mission data.
+We conclude the paper in \Cref{sec:conclusion}.
 
 \section{Related Work}
 \label{sec:related_work}
+
 \begin{itemize}
   \item LCN23
   \item Channel models for satellites
@@ -152,16 +208,24 @@
 \label{sec:system_model}
 
 \section{Our approach}
+\label{sec:our_approach}
+
 \subsection{Joint Source and Channel Coding using Neural Networks}
-\subsection{Attention Modules}
+
 \subsection{Channel Model for LEO Satellites}
+
+\subsection{Attention Modules}
+
 \subsection{Link Budget Analysis}
 Identisch zu LCN23
 
 \section{Evaluation}
-\section{Conclusion}
+\label{sec:evaluation}
 
-\nocite{Wei2004} % TODO remove
+\section{Conclusion}
+\label{sec:conclusion}
+
+\nocite{satjscc}
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
