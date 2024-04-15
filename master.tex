@@ -323,10 +323,40 @@ Finally, even relatively large standard machine learning models, such as VGG19 \
   \includegraphics[width=\linewidth]{figures/coding-decoding}
 
   \caption{Overview of our communication architecture and comparison with traditional separate-encoder designs.}
+  \label{fig:overview}
 \end{figure}
 
+To get an overview of our approach, we first explain the basic \ac{jscc} communication architecture and contrast it to the traditional case that uses separate encoders and decoders.
+W.l.o.g., we consider a single small satellite in \ac{leo}, which transmits sensor data to a ground station over a bandwidth-constrained channel.
+The sensor data comprises optical images from multiple spectrums as defined in \Cref{sec:system_model}.
 
-communication model from old paper, fig 2
+\Cref{fig:overview} shows an overview of the architecture in contrast to traditional approaches.
+With separate coding (shown in the bottom half), the sensor data $x \in \mathbb{R}^n$ is first encoded using a source encoder, such as \jpegtwok.
+Afterwards, a channel encoder (e.g., \ac{ldpc}) adds redundancy to the compressed signal in order to protect it against packet loss due to interference.
+The modulator component then translates the channel encoder's output to physical layer samples $z \in \mathbb{C}^k$, which can be transmitted over a noisy channel.
+The ground station receives the distorted signal $\hat{z}$ and uses corresponding components in inverse order to decode an approximation of $x$.
+The demodulator $D_m$ translates the samples back to bits, which serve as input to the channel decoder $D_c$.
+The channel decoder reconstructs the compressed image data, correcting transmission errors as far as possible.
+The source decoder $D_s$ finally approximately reconstructs the original optical sensor data as $\hat{x}$.
+
+In our \ac{jscc} approach (upper half of \Cref{fig:overview}), in contrast, parts of a single neuronal network are used as encoder $N_e$ and decoder $N_d$ by the satellite and ground station, respectively.
+These components jointly perform the source coding, channel coding, modulation, and their corresponding inverse operations.
+
+We use an encoder-decoder neuronal network architecture to implement $N_e$ and $N_d$:
+During training, the encoder ($N_e$) and decoder ($N_d$) parts of the network are linked together using a realistic channel model for noisy satellite links.
+The model is then trained using an image dataset derived from the body of \sentinelii mission data.
+The images within the dataset are used as model input and the reconstructed image's quality is used as reward metric.
+Normally, a separate model would need to be trained for each characteristic set of channel conditions \cite{satjscc}.
+In order to use a single network for a wide array of channel conditions, we employ so-called attention modules as part of both the encoder and decoder during training.
+These essentially allow to parameterize the network during later operation to cater to changing channel conditions.
+
+% TODO adapt -v
+
+Once the training is completed, we can use the encoder part of the trained network on the satellite and the decoder part on the ground station to obtain the joint encoder and decoder, respectively.
+To parametrize the network, we calculate \ac{snr} values based on suitable assumptions about the link budget for a satellite-to-ground-station link.
+
+Next, we explain the network architecture and how we calculate suitable \ac{snr} values based on the link budget in detail.
+
 
 \subsection{Joint Source and Channel Coding using Neural Networks}
 
