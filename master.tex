@@ -303,18 +303,15 @@ Finally, \Cref{fig:sentinel_greece} shows wildfires in Greece in 2023.
 For the visualization, the shortwave infrared spectrum was merged with the visible light spectrum, showing the fire front.
 Dark brown areas show the burned area.
 Thereby, these images provided valuable insights for civil protection authorities.
-By using more efficient and more robust image compression and transmission using \ac{jscc}, sensor data in small satellite missions can be transmitted and used faster, allowing even more rapid responses.
+By using more efficient and more robust image compression and transmission, sensor data in small satellite missions can be transmitted and used faster, allowing even more rapid responses.
 
-%%% TODO rephrase -v
-
-Since the small size of satellites limits their energy budget, it is necessary to consider energy constraints when deploying neural networks onboard of satellites.
-In addressing the system's deployability and energy consumption, we turn to several key studies and missions.
-
-The detection of cargo ships on the ocean from satellite imagery has been tested using an Nvidia TX2 SoC, which not only fits within CubeSat limitations but also sustains a total power envelope of 7.5\,W, making it compatible with small satellite missions \cite{8556744}.
-The Intel Movidius Myriad 2 and STM32 Microcontroller, both low-power processors, have successfully executed star identification tasks using neural networks with a power usage of 0.89--1.08\,W for Myriad and 1.15--1.2\,W for STM32 \cite{s20216250}.
-On the International Space Station (ISS), deep learning models were evaluated on the Qualcomm Snapdragon 855 and Intel Movidius Myriad X processors, further underlining the feasibility of running a neural network onboard of satellites \cite{9884906}.
-A variety of models were tested that were trained on images from Earth and Mars. In particular, rather large standard ML models, such as VGG19 \cite{DBLP:journals/corr/SimonyanZ14a} and ResNet50 \cite{7780459}, were used. 
-Moreover, the practical deployment of ML models onboard small satellites was tested in the $\Phi$-Sat mission via the use of Intel Movidius Myriad 2 for onboard cloud detection \cite{9600851}.
+In this paper, we propose a neuronal-network-based \ac{jscc} approach to improve communication.
+As small satellites are severely power-constrained, necessary hardware resources need to be taken into account when considering the feasibility of our solution.
+Recently, a number of processing platforms have been successfully evaluated for use in space and small satellite applications.
+Two examples are the Intel Movidius Myriad 2 and STM32 Microcontrollers, which have been used to identify stars and only use approximately 1 Watt power \cite{8556744}.
+During the $\Phi$-Sat mission, deployment of machine learning models has been evaluated using an Intel Movidius Myriad processor, as well.
+Similarly, Nvidia's TX2 SoC, which is compatible with the CubeSat standard's power constraints, has been used to detect cargo ships \cite{8556744}.
+Finally, even relatively large standard machine learning models, such as VGG19 \cite{DBLP:journals/corr/SimonyanZ14a} and ResNet50 \cite{7780459}, have been evaluated on the International Space Station (ISS), operating on the Qualcomm Snapdragon 855 and Intel Movidius Myriad X processors \cite{9884906}.
 
 
 \section{Our approach}
