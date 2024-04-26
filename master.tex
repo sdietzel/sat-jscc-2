@@ -314,10 +314,15 @@ Similarly, Nvidia's TX2 SoC, which is compatible with the CubeSat standard's pow
 Finally, even relatively large standard machine learning models, such as VGG19 \cite{DBLP:journals/corr/SimonyanZ14a} and ResNet50 \cite{7780459}, have been evaluated on the International Space Station (ISS), operating on the Qualcomm Snapdragon 855 and Intel Movidius Myriad X processors \cite{9884906}.
 
 
-\section{Our approach}
+\section{Our Approach}
 \label{sec:our_approach}
 
-\subsection{Overview}
+The goal of our approach is to transmit sensor data $x \in \mathbb{R}$ acquired by small satellites in \ac{leo} to a ground station over a bandwidth-constrained channel.
+The sensor data comprises optical images from multiple spectrums as defined in \Cref{sec:system_model}.
+Assuming lossy compression and transmission, the ground station reconstructs an approximation $\hat{x}$ of the original data $x$ with the goal that $\hat{x}$ is as close to $x$ as possible.
+Next, we given an overview of the protocol architecture before we explain the neural network architecture using attention modules and the channel model in more detail.
+
+\subsection{Architecture overview}
 
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/coding-decoding}
@@ -326,10 +331,7 @@ Finally, even relatively large standard machine learning models, such as VGG19 \
   \label{fig:overview}
 \end{figure}
 
-To get an overview of our approach, we first explain the basic \ac{jscc} communication architecture and contrast it to the traditional case that uses separate encoders and decoders.
-W.l.o.g., we consider a single small satellite in \ac{leo}, which transmits sensor data to a ground station over a bandwidth-constrained channel.
-The sensor data comprises optical images from multiple spectrums as defined in \Cref{sec:system_model}.
-
+To introduce our protocol's main components, we first explain the basic \ac{jscc} communication architecture and contrast it to the traditional case that uses separate encoders and decoders.
 \Cref{fig:overview} shows an overview of the architecture in contrast to traditional approaches.
 With separate coding (shown in the bottom half), the sensor data $x \in \mathbb{R}^n$ is first encoded using a source encoder, such as \jpegtwok.
 Afterwards, a channel encoder (e.g., \ac{ldpc}) adds redundancy to the compressed signal in order to protect it against packet loss due to interference.
@@ -342,30 +344,107 @@ The source decoder $D_s$ finally approximately reconstructs the original optical
 In our \ac{jscc} approach (upper half of \Cref{fig:overview}), in contrast, parts of a single neuronal network are used as encoder $N_e$ and decoder $N_d$ by the satellite and ground station, respectively.
 These components jointly perform the source coding, channel coding, modulation, and their corresponding inverse operations.
 
-We use an encoder-decoder neuronal network architecture to implement $N_e$ and $N_d$:
+We use an encoder-decoder neuronal network architecture based on \cite{satjscc} to implement $N_e$ and $N_d$:
 During training, the encoder ($N_e$) and decoder ($N_d$) parts of the network are linked together using a realistic channel model for noisy satellite links.
-The model is then trained using an image dataset derived from the body of \sentinelii mission data.
+To better reflect realistic channel conditions, we replace the \ac{awgn} channel used in \cite{satjscc} with a more realistic channel model for \ac{leo} satellites.
+The encoder-decoder model is then trained using an image dataset derived from the body of \sentinelii mission data.
 The images within the dataset are used as model input and the reconstructed image's quality is used as reward metric.
 Normally, a separate model would need to be trained for each characteristic set of channel conditions \cite{satjscc}.
-In order to use a single network for a wide array of channel conditions, we employ so-called attention modules as part of both the encoder and decoder during training.
+In order to use a single network for a wide array of channel conditions, we augment the model with so-called attention modules \cite{wireless-attention-modules} as part of both the encoder and decoder during training.
 These essentially allow to parameterize the network during later operation to cater to changing channel conditions.
+The trained network is then separated into the encoder component $N_e$, which is used by the satellite and the decoder component $N_d$, which is used by the ground station.
 
-% TODO adapt -v
+\subsection{Encoder-decoder architecture with attention modules}
 
-Once the training is completed, we can use the encoder part of the trained network on the satellite and the decoder part on the ground station to obtain the joint encoder and decoder, respectively.
-To parametrize the network, we calculate \ac{snr} values based on suitable assumptions about the link budget for a satellite-to-ground-station link.
+\begin{figure}
+  \includegraphics[width=\linewidth]{figures/network-architecture}
 
-Next, we explain the network architecture and how we calculate suitable \ac{snr} values based on the link budget in detail.
+  \caption{Network architecture overview.}
+  \label{fig:architecture-overview}
+\end{figure}
+
+The encoder-decoder network architecture is shown in \Cref{fig:architecture-overview}.
+As basis, we use the network structure proposed in \cite{satjscc}, which adapts ResNet \cite{resnet} to the \ac{jscc} use case.
+To make the architecture more flexible, we add attention modules, as well as a more realistic channel model.
+The block on the left serves as neural network encoder, jointly performing source coding, channel coding, and modulation.
+Compression is achieved by translating the input $x \in \mathbb{R}^n$ to channel symbols $z \in \mathbb{C}^k$, where $k < n$.
+By adjusting $k$, the system's compression ratio $k/n$ can be defined.
+
+\begin{figure*}
+  \begin{subfigure}{.3\linewidth}
+    \centering
+    \includegraphics[height=10em]{figures/residual-block}
+    \caption{Residual block $(f, s)$}
+    \label{fig:residual}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{.3\linewidth}
+    \centering
+    \includegraphics[height=10em]{figures/residual-block-transpose}
+    \caption{Residual block transpose $(f, s)$}
+    \label{fig:residual-transpose}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{.3\linewidth}
+    \centering
+    \includegraphics[height=10em]{figures/attention-module}
+    \caption{Attention module}
+    \label{fig:attention}
+  \end{subfigure}
+
+  \caption{Specific block architectures used within the encoder-decoder network.}
+  \label{fig:blocks}
+\end{figure*}
+
+For the encoder, we use four residual blocks with 256 filters and a kernel size of $3 \times 3$.
+The structure of the residual blocks is shown in \Cref{fig:residual}.
+Each residual block is followed by an attention module as proposed in \cite{wireless-attention-modules}.
+\Cref{fig:attention} shows the structure of the attention modules.
+These modules allow to alter the feature weights of their preceding residual blocks in order to accommodate different channel conditions.
 
 
-\subsection{Joint Source and Channel Coding using Neural Networks}
+%%%% TODO REWRITE FROM HERE %%%%
 
-\subsection{Channel Model for LEO Satellites}
+
+AF module takes the SNR and the output of the FL module as the input and produces a sequence of scaling parameters. The product of the outputs of the FL module and the AF module can be seen as a filtered version of the FL module output.
+
+The channel relationship are captured and different scaling parameters are generated for different channel features to increase or suppress their connection strength to the next layer. The aforementioned mechanism is channel-wise soft attention1 .
+
+1) context extraction; 2) factor prediction; and 3) feature recalibration
+
+1) global average pooling on output to extract global information, concatenate with channel params
+2) use simple structure with fcl to predict feature importance based on channel params
+3) calibrate feature importance based on fcl output
+
+The last layer is a convolutional layer consisting of $c$ filters, where $c$ is determined by the compression ratio $k/n$.
+We use a \ac{prelu} as activation function, which generalizes the traditional ReLU by introducing a learnable parameter, which improves predictions.
+The output of the encoder is combined into a vector $\tilde{z}$ of $k$ complex-valued numbers representing the channel symbols.
+
+The next layer is a non-trainable channel layer that gives a realistic representation of ... channel model ... see \Cref{sub:channel_model}.
+
+The block on the right serves as neural network decoder, which translates the -- potentially corrupted channel symbols $\hat{z}$ back to an approximation $\hat{x}$ of the original data.
+
+Similar to encoder, the decoder consists of a convolutional transpose layer, four residual transpose blocks (see \Cref{fig:residual-transpose}), another convolutional transpose layer, and a \ac{prelu} activation function.
+
+During evaluation, use the \ac{psnr} as a metric to determine the quality of the reconstructed image as follows:
+%
+\begin{equation}
+  \mathrm{PSNR} = 10 \log_{10}\frac{\mathrm{MAX}^2}{\mathrm{MSE}},
+\end{equation}
+%
+where $\mathrm{MAX}$ is the maximum possible pixel value.
+
+Intuitively, \ac{psnr} expresses the ratio between the maximum possible signal value and the distorting noise that reduces its quality.
+The metric is often used to measure the reconstruction quality of lossy compression codecs, as it approximates human perception of the reconstruction quality.
+
+
+\subsection{Channel model for \ac{leo} satellites}
+\label{sub:channel_model}
+
 
 \subsection{Attention Modules}
 
-\subsection{Link Budget Analysis}
-Identisch zu LCN23
+anderes paper zusammen fassen
 
 \section{Evaluation}
 \label{sec:evaluation}
