@@ -24,6 +24,24 @@
 \definecolor{tol3}{HTML}{ee7733}
 \definecolor{tol4}{HTML}{cc3311}
 
+
+
+% \definecolor{tol1}{HTML}{4477AA}
+% \definecolor{tol2}{HTML}{EE6677}
+% \definecolor{tol3}{HTML}{228833}
+% \definecolor{tol4}{HTML}{CCBB44}
+\definecolor{tol5}{HTML}{66CCEE}
+\definecolor{tol6}{HTML}{CD7F32}
+
+\pgfplotscreateplotcyclelist{bwb}{%
+  thick, tol1\\%
+  thick, tol2\\%
+  thick, tol3\\%
+  thick, tol4\\%
+  thick, tol5\\%
+  thick, tol6\\%
+}
+
 \usepackage{acro}
 \DeclareAcronym{cots}{
   short = COTS,
@@ -448,6 +466,181 @@ anderes paper zusammen fassen
 
 \section{Evaluation}
 \label{sec:evaluation}
+In this section, we evaluate JSCC\_AF and compare the results against multiple neural networks trained individually for each parameter set.
+We evaluate using statistical data from \cite{channel_values}. 
+They provide values for $\alpha$, $\psi$ and MP for five different environments (open, suburban, intermediate tree-shadow, heavy tree-shadow, urban).
+The measurements were conducted for 40, 60, 70 and 80 elevation angles.
+Three states describing different shadowing conditions are introduced: line-of-sight (LOS), intermediate shadow, and deep shadow.
+First, we evaluate how JSCC without AF performs on the data to identify how various parameter combinations influence the results.
+We consider different environments, states, compression ratios and elevation angles. 
+Then we compare the performance of JSCC\_AF against JSCC.
+Finally, we compare JSCC\_AF against JSCC in the case of state mismatch, i.e. when the actual channel state differs from what we expected.
+
+\begin{figure}[t!]
+  \begin{subfigure}{.3\linewidth}
+  \centering
+  \include{plots/plt_no_af_40_los.tex}
+  \vspace{-2.5em}
+  \caption{LOS}
+\end{subfigure}
+\vspace{1ex}
+\begin{subfigure}{.3\linewidth}
+  \centering
+  \include{plots/plt_no_af_40_shadow.tex}
+  \vspace{-2.5em}
+  \caption{Shadow}
+\end{subfigure}
+\vspace{1ex}
+\begin{subfigure}{.3\linewidth}
+  \centering
+  \include{plots/plt_no_af_40_deep_shadow.tex}
+  \vspace{-2.5em}
+  \caption{Deep shadow}
+\end{subfigure}
+\caption{No AF, different scenes, 40 elevation angle}
+\label{fig:different_scenes_40}
+\end{figure}
+
+The results for 40 elevation angle are presented in \Cref{fig:different_scenes_40}. 
+The x-axis shows different compression rates and y-axis the achieved PSNR values.
+It can be seen that the results strongly depend on the environment.
+As expected, the best PSNR values are achieved by open and the worse for much more challenging environments such as urban or intermediate tree-shadow.
+It also can be seen that the results significantly depend on shadowing conditions. 
+While for deep shadow the performance varies considerably between different environments, 
+the differences become less pronounced as shadowing conditions improve.
+
+
+
+\begin{figure}[t!]
+  \begin{subfigure}{.3\linewidth}
+  \centering
+  \include{plots/plt_el_angle_0.04_los.tex}
+  \vspace{-2.5em}
+  \caption{LOS}
+\end{subfigure}
+\vspace{1ex}
+\begin{subfigure}{.3\linewidth}
+  \centering
+  \include{plots/plt_el_angle_0.04_shadow.tex}
+  \vspace{-2.5em}
+  \caption{Shadow}
+\end{subfigure}
+\vspace{1ex}
+\begin{subfigure}{.3\linewidth}
+  \centering
+  \include{plots/plt_el_angle_0.04_deep_shadow.tex}
+  \vspace{-2.5em}
+  \caption{Deep shadow}
+\end{subfigure}
+\caption{No AF, different scenes, el. angle 40 vs. 80, compr. rate 0.04}
+\label{fig:elevation_angles_0.04}
+\end{figure}
+
+
+\begin{figure}[t!]
+  \begin{subfigure}{.3\linewidth}
+  \centering
+  \include{plots/plt_el_angle_0.33_los.tex}
+  \vspace{-2.5em}
+  \caption{LOS}
+\end{subfigure}
+\vspace{1ex}
+\begin{subfigure}{.3\linewidth}
+  \centering
+  \include{plots/plt_el_angle_0.33_shadow.tex}
+  \vspace{-2.5em}
+  \caption{Shadow}
+\end{subfigure}
+\vspace{1ex}
+\begin{subfigure}{.3\linewidth}
+  \centering
+  \include{plots/plt_el_angle_0.33_deep_shadow.tex}
+  \vspace{-2.5em}
+  \caption{Deep shadow}
+\end{subfigure}
+\caption{No AF, different scenes, el. angle 40 vs. 80, compr. rate 0.33}
+\label{fig:elevation_angles_0.33}
+\end{figure}
+
+
+Next, we consider the differences between 40 and 80 elevation angles. 
+The results for compression rates $0.04$ and $0.33$ are presented in \Cref{fig:elevation_angles_0.04} and \Cref{fig:elevation_angles_0.33}.
+The results depend both on environment and shadowing state.
+While, for LOS, the differences between 40 and 80 remain neglectable across different scenes, 
+stronger performance variations can be seen for more challenging states shadow and deep shadow.
+In addition, attention should be paid to compression rate when different elevation angles are considered. 
+The results suggest that moderate compression rates should be chosen in the case of low elevation angles.
+
+
+\begin{figure}[t!]
+  \begin{subfigure}{.45\linewidth}
+  \centering
+  \include{plots/plt_af_vs_no_af_urban_40.tex}
+  \vspace{-2.5em}
+  \caption{40 elevation angle}
+\end{subfigure}
+\vspace{1ex}
+\begin{subfigure}{.45\linewidth}
+  \centering
+  \include{plots/plt_af_vs_no_af_urban_80.tex}
+  \vspace{-2.5em}
+  \caption{80 elevation angle}
+\end{subfigure}
+\caption{AF vs. no AF, urban}
+\label{fig:af_vs_no_af}
+\end{figure}
+
+
+Next, we evaluate how the use of attention modules influences the performance.
+We compare the neural network architectures with and without attention modules.
+For our evaluation, we choose urban environment since it shows stronger variability for different states and elevation angles.
+The results are presented in \Cref{fig:af_vs_no_af}.
+The results show that performance of attention modules depends on compression ratio, state and elevation angle plays less important role. 
+When stronger compression is applied, the PSNR values are similar to that of using a separate neural network for each parameter combination or even slightly better in the case of LOS 40.
+For less aggressive compression, attention modules show slightly inferior results with biggest performance gap for deep shadow and smallest for shadow. 
+This gap becomes even smaller for shadow when elevation angle is set to 80. 
+However, there is no significant difference between 40 and 80 for other states.
+
+
+
+\begin{figure}[t!]
+  \begin{subfigure}{.45\linewidth}
+  \centering
+  \include{plots/plt_los_instead_of_deep_shadow_urban.tex}
+  \vspace{-2.5em}
+  \caption{LOS instead of deep shadow (better than expected)}
+  \label{fig:different_state_same_snr_better}
+\end{subfigure}
+\vspace{1ex}
+\begin{subfigure}{.45\linewidth}
+  \centering
+  \include{plots/plt_deep_shadow_instead_of_los_urban.tex}
+  \vspace{-2.5em}
+  \caption{Deep shadow instead of LOS (worse than expected)}
+  \label{fig:different_state_same_snr_worse}
+\end{subfigure}
+\caption{Channel conditions other than expected (state), urban}
+\label{fig:different_state_same_snr}
+\end{figure}
+
+
+
+Finally, we evaluate what happens the case of a mismatch between estimated parameters and real channel conditions. 
+Consider the results for different state and same SNR, which are presented in \Cref{fig:same_state_different_snr}.
+In \Cref{fig:different_state_same_snr_better} we assume deep shadow but actual state is LOS, i.e. channel conditions are better than expected. 
+We compare the results for correct channel estimation (solid line) and wrong channel estimation.
+The results show that both AF and no\_AF are not able to benefit from better channel state and experience noticeable performance degradation.
+The results differ a lot for 40 and 80 elevation angles.
+While, for 80, both architectures achieve similar results, 
+AF performs significantly better for 40. 
+
+In \Cref{fig:different_state_same_snr_worse} we consider the opposite case: 
+LOS state is expected and the actual channel state is deep shadow. 
+Similar to the previous example, the performance degrades in the case of wrong state estimation. For both elevation angles AF outperforms no\_AF.
+
+
+
+
 
 \section{Conclusion}
 \label{sec:conclusion}

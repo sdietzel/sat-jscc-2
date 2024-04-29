@@ -1,0 +1,99 @@
+\begin{tikzpicture}
+    \edef\mylst{"An arbitrary string","String","Custom label","Not this data"}
+    \begin{axis}[
+      ybar,
+      %log ticks with fixed point,
+      width=\linewidth,
+      %height=.5\linewidth,
+      every axis plot/.append style={
+                %ybar,
+                bar width=8pt,
+                bar shift=0pt,
+                fill
+              },
+      %
+      % nodes near coords,
+      % nodes near coords align=above,
+      % nodes near coords align={vertical},
+      xtick={%
+          \null,
+          open,  suburban,  intermediate tree-shadow,
+          heavy tree-shadow, urban,
+      },
+      %
+      axis x line=bottom,
+      axis y line=left,
+      ymajorgrids=true,
+      %
+      ylabel={PSNR},
+      %y label style={at={(axis description cs:0.1,.3)},anchor=south},
+      ymin=50,
+      ymax=70,
+      enlargelimits=auto,
+      %
+      xlabel={Scenes},
+      %
+      nodes near coords align=above,
+        every node near coord/.append style={xshift=5pt},
+      %
+      symbolic x coords ={%
+          \null,
+          open,  suburban,  intermediate tree-shadow,
+          heavy tree-shadow, urban,
+          % \null
+      },
+      legend cell align={left},
+      legend style={column sep=5pt},
+      legend pos=north west,
+      %y coord trafo/.code={\pgfmathparse{#1 * 0.000001}},
+      x tick label style={font=\footnotesize,rotate=90,anchor=east,major tick length=0pt},
+        x label style={at={(axis description cs:0.5,-0.15)},anchor=north},
+      ]
+  
+      %\addplot[fill=tol1!33] coordinates { (4/64, 2758668.0) (8/64, 1379334.0) (16/64, 689667.0) (4/128, 3218446.0) (8/128, 1609223.0) (16/128, 804611.5) (4/256, 3678224.0) (8/256, 1839112.0) (16/256, 919556.0) (4/512, 4138002.0) (8/512, 2069001.0) (16/512, 1034500.5)};
+      %\addplot[fill=tol2!33] coordinates { (4/64, 2067667.375)  (8/64, 1188627.125) (16/64, 590885.25) (4/128, 2596351.875) (8/128, 1396883.625) (16/128, 710855.0) (4/256, 3006822.875) (8/256, 1475599.875) (16/256, 820431.75) (4/512, 3445006.625) (8/512, 1681019.375) (16/512, 908686.125)};
+      
+      \legend{
+        40,
+        80
+      }
+
+      \addplot[
+        bar shift=-5pt,fill=white,postaction={
+        pattern=north east lines, pattern color=black
+    }] coordinates { (open, 0) };
+      \addplot[bar shift=5pt,fill=white] coordinates { (open, 0) };
+
+      \addplot[%nodes near coords=$1.36$,
+        bar shift=-5pt,fill=tol1!33,postaction={
+        pattern=north east lines, pattern color=black
+    }] coordinates { (open, 66.28719931983984) };
+      \addplot[bar shift=5pt,fill=tol1!33] coordinates { (open, 67.76665563361574) };
+      
+
+      \addplot[%nodes near coords=$1.18$,
+      bar shift=-5pt,fill=tol2!33,postaction={
+        pattern=north east lines, pattern color=black
+    }] coordinates { (suburban, 59.97375970276803) };
+      \addplot[bar shift=5pt,fill=tol2!33] coordinates { (suburban, 64.41231830717751) };
+      
+      \addplot[%nodes near coords=$1.19$,
+        bar shift=-5pt,fill=tol3!33,postaction={
+        pattern=north east lines, pattern color=black
+    }] coordinates { (intermediate tree-shadow, 58.080011031063236) };
+      \addplot[bar shift=5pt,fill=tol3!33] coordinates { (intermediate tree-shadow, 63.39092156973394) };
+      
+      \addplot[%nodes near coords=$1.26$,
+        bar shift=-5pt,fill=tol1!66,postaction={
+        pattern=north east lines, pattern color=black
+    }] coordinates { (heavy tree-shadow, 57.512479690636944) };
+      \addplot[bar shift=5pt,fill=tol1!66] coordinates { (heavy tree-shadow, 60.45771389019385) };
+      
+      \addplot[%nodes near coords=$1.17$,
+        bar shift=-5pt,fill=tol2!66,postaction={
+        pattern=north east lines, pattern color=black
+    }] coordinates { (urban, 57.03474187203291) };
+      \addplot[bar shift=5pt,fill=tol2!66] coordinates { (urban, 62.0518730036318) };
+      
+    \end{axis} 
+  \end{tikzpicture}

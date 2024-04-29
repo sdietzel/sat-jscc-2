@@ -1,0 +1,49 @@
+\begin{tikzpicture}
+    \begin{axis}[
+        %width=18cm,height=8cm,
+        width=\linewidth,
+        xlabel = {Compression ratio},
+        ylabel = {PSNR},
+        legend style={at={(0.45,-0.25)},anchor=north},
+        legend cell align={left},
+        ymin = 50.0,
+        ymax = 70,
+        %legend pos=south east,
+		cycle list name=bwb,
+		legend columns=2,
+		transpose legend,
+		column sep=5pt,
+        ]
+
+        \addplot[tol1!60, thick] 
+        plot 
+        table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_40_open_los_los};
+
+        \addplot[tol2!60, thick] 
+        plot 
+        table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_40_suburban_los_los};
+
+        \addplot[tol3!60, thick] 
+        plot 
+        table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_40_intermediate_tree_shadow_los_los};
+        
+%         \addplot[tol4!60, thick] 
+%         plot 
+%         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {../results/no_AF_40_heavy_tree_shadow_shadow_shadow};
+        
+        \addplot[tol5!60, thick] 
+        plot 
+        table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_40_urban_los_los};
+
+
+        \legend{
+            open,
+            suburban, 
+            intermediate tree shadow,
+%             heavy tree shadow,
+            urban
+            }
+
+
+    \end{axis}
+\end{tikzpicture}

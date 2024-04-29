@@ -1,0 +1,56 @@
+\begin{tikzpicture}
+    \begin{axis}[
+        %width=18cm,height=8cm,
+        width=\linewidth,
+        xlabel = {Compression ratio},
+        ylabel = {PSNR},
+        legend style={at={(0.45,-0.25)},anchor=north},
+        legend cell align={left},
+        ymin = 50.0,
+        ymax = 70,
+        %legend pos=south east,
+		cycle list name=bwb,
+		legend columns=2,
+		transpose legend,
+		column sep=5pt,
+        ]
+
+
+        \addplot[tol1!60, thick] 
+        plot 
+        table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots//no_AF_40_urban_los_los};
+        
+        \addplot[tol2!60, thick] 
+        plot 
+        table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots//no_AF_40_urban_shadow_shadow};
+
+        \addplot[tol3!60, thick] 
+        plot 
+        table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots//no_AF_40_urban_deep_shadow_deep_shadow};
+
+
+        \addplot[tol1!60, thick, dotted] 
+        plot 
+        table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots//AF_SNR_40_urban_los_los};
+        
+        \addplot[tol2!60, thick, dotted] 
+        plot 
+        table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots//AF_SNR_40_urban_shadow_shadow};
+
+        \addplot[tol3!60, thick, dotted] 
+        plot 
+        table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots//AF_SNR_40_urban_deep_shadow_deep_shadow};
+
+
+        \legend{
+            los,
+            shadow, 
+            deep shadow,
+            los af,
+            shadow af,
+            deep shadow af
+            }
+
+
+    \end{axis}
+\end{tikzpicture}
