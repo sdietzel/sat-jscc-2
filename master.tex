@@ -458,6 +458,92 @@ The metric is often used to measure the reconstruction quality of lossy compress
 
 \subsection{Channel model for \ac{leo} satellites}
 \label{sub:channel_model}
+We compute the channel output symbols $\hat{z}$ as follows:
+\begin{equation}
+  \hat{z} = zh + n,
+\end{equation}
+where $h$ denotes channel gain and $n$ Gaussian noise.
+Next, we explain how $h$ and $n$ are calculated.
+
+To account for specific satellite channel conditions, we compute $h$ using Fontan's statistical channel~\cite{} model. 
+Since the satellite channel characteristics heavily depend on shadowing conditions, in general, 
+they cannot be accurately modeled using a single distribution.
+Typically, multiple states describing different degrees of scheduling are introduced 
+and the overall pdf is given as a sum of of the individual state pdfs multiplied by the probabilities of being in a given state.
+For example, assuming a two-state model with line-of-sight (LOS) and shadow conditions: 
+\begin{equation}
+f_{overall}(r) = p_{los}f_{los}(r) + p_{shadow}f_{shadow}(r)
+\end{equation}
+
+Furthermore, to add more details, e.g. state duration, Markov chain models can be introduced.
+Then, the propagation channel at a given time is described by the state probability matrix, which contains the of being in a particular state
+and the state transition probability matrix, which contains the probability of changing from state $i$ to state $j$.
+
+The Fontan's channel model is a three-state Markov chain model containing the following states:
+\begin{itemize}
+  \item LOS (no shadowing)
+  \item shadow (moderate shadowing conditions)
+  \item deep shadow (heavy shadowing conditions)
+\end{itemize}
+
+In each state, the channel is modeled using Loo distribution~\cite{}. 
+The overall received signal is described as a sum of the log-normally distributed direct component and Rayleigh distributed multipath component with parameters $\alpha$, $\psi$ and $MP$.
+The log-normal distribution is characterized by mean $\alpha$ and standard deviation $\psi$ and Rayleigh distribution by its average power $MP$.
+Different values for $\alpha$, $\psi$ and $MP$ are chosen depending on the state and elevation angle.
+The pdf is as follows:
+\begin{equation}
+  p(r) = \frac{r}{b_0\sqrt{2\pi d_0}} \int_{0}^{\infty}\frac{1}{z} exp\left[-\frac{(\ln z - \mu)^2}{2d_0} - \frac{r^2 + z^2}{2b_0}\right] \cdot I_0\left(\frac{rz}{b_0}\right) dz
+\end{equation}
+
+whereby there the following dependencies exist between $mu$, $d_0$ and $b_0$ and $\alpha$, $\psi$ and $MP$:
+\begin{align}
+\alpha &= 20\log_{10}(e^\mu)  & \psi &= 20\log_{10}(e^{\sqrt{d_0}}) & MP &= 10\log_{10(2b_0)}  
+\end{align}
+
+Next, we consider the Gaussian noise $n$. We follow the approach presented in~\cite{LCN23}. 
+We first compute the typical SNR values. 
+To this end, we determine the distance $d$ between the satellite and the ground station based on the current elevation angle $\epsilon_0$ and Earth radius $R_E = 6378 km$ as described in \cite{}:
+%
+\begin{equation}
+  d = R_E\Biggl(\sqrt{\Bigl(\frac{h + R_E}{R_E}\Bigr)^2 - \cos^{2}\epsilon_{0}} - \sin\epsilon_{0}\Biggr),
+\end{equation}
+%
+
+Next, we compute thermal noise $N$ as follows:
+%
+\begin{equation}
+  N=k \cdot T \cdot B,
+\end{equation}
+%
+where $B$ and $T$ denote the bandwidth and noise temperature respectively and $k = 1.380649 \cdot 10^{-23}$ is the Boltzmann's constant.
+We compute the noise temperature as the sum of the antenna temperature $T_a = 290 K$ and the receiver noise temperature $T_e$, which is determined as:
+%
+\begin{equation}
+  T_e = T_0(F_{\mathrm{sys}} - 1),
+\end{equation}
+%
+$T_0 = 290$\,K is the reference temperature and $F_{sys} = 2$\,dB denotes the receiver's noise figure.
+
+Next, we compute the path loss $L$ using the Friis formula \cite{} and determine the SNR depending on $L$ and $N$ as follows:
+%
+\begin{equation}
+  \mathrm{SNR} = P_t + G_t + G_r - L - N,
+\end{equation}
+%
+where $P_t$, $G_t$ and $G_r$ are input parameters denoting the transmitted power, the transmitter and the receiver gains respectively. 
+The computed $\mathrm{SNR}$ value is then used to compute the noise power $\sigma^2$:
+%
+\begin{equation}
+  \sigma^2 = \frac{P_{\mathrm{sig}}}{2 \cdot 10^{\frac{\mathrm{SNR}}{10}}}
+\end{equation}
+%
+where $P_{sig}$ is the normalized signal power.
+Finally, we compute the noise vector $n$ as follows:
+%
+\begin{equation}
+  n = \sigma \times \bigl[\mathcal{N}(0,1) + j * \mathcal{N}(0,1) \bigr] 
+\end{equation}
+%
 
 
 \subsection{Attention Modules}
