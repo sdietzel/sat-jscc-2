@@ -464,6 +464,7 @@ The \ac{psnr} captures to what extent original signal value is affected by disto
 
 \subsection{Channel model for \ac{leo} satellites}
 \label{sub:channel_model}
+
 We compute the channel output symbols $\hat{z}$ as follows:
 \begin{equation}
   \hat{z} = zh + n,
@@ -509,12 +510,12 @@ whereby there the following dependencies exist between $mu$, $d_0$ and $b_0$ and
 \begin{align}
 \alpha &= 20\log_{10}(e^\mu) \\
   \psi &= 20\log_{10}(e^{\sqrt{d_0}}) \\
-   \MP &= 10\log_{10(2b_0)}  
+   \MP &= 10\log_{10}(2b_0)
 \end{align}
 
 Next, we consider the Gaussian noise $n$. We follow the approach presented in~\cite{LCN23}. 
 We first compute the typical \ac{snr} values. 
-To this end, we determine the distance $d$ between the satellite and the ground station based on the current elevation angle $\epsilon_0$ and Earth radius $R_E = 6378 km$ as described in \cite{}:
+To this end, we determine the distance $d$ between the satellite and the ground station based on the current elevation angle $\epsilon_0$ and Earth radius $R_E = 6378\,\textrm{km}$ as described in \cite{}:
 %
 \begin{equation}
   d = R_E\Biggl(\sqrt{\Bigl(\frac{h + R_E}{R_E}\Bigr)^2 - \cos^{2}\epsilon_{0}} - \sin\epsilon_{0}\Biggr),
@@ -534,7 +535,7 @@ We compute the noise temperature as the sum of the antenna temperature $T_a = 29
   T_e = T_0 \big(F_{\mathrm{sys}} - 1 \big),
 \end{equation}
 %
-$T_0 = 290$\,K is the reference temperature and $F_{sys} = 2$\,dB denotes the receiver's noise figure.
+$T_0 = 290$\,K is the reference temperature and $F_{\textrm{sys}} = 2$\,dB denotes the receiver's noise figure.
 
 Next, we compute the path loss $L$ using the Friis formula \cite{} and determine the SNR depending on $L$ and $N$ as follows:
 %
@@ -549,7 +550,7 @@ The computed $\mathrm{SNR}$ value is then used to compute the noise power $\sigm
   \sigma^2 = \frac{P_{\mathrm{sig}}}{2 \cdot 10^{\frac{\mathrm{SNR}}{10}}}
 \end{equation}
 %
-where $P_{sig}$ is the normalized signal power.
+where $P_{\mathrm{sig}}$ is the normalized signal power.
 Finally, we compute the noise vector $n$ as follows:
 %
 \begin{equation}
@@ -557,6 +558,10 @@ Finally, we compute the noise vector $n$ as follows:
 \end{equation}
 %
 
+%TODO:
+% - z ersetzen weil doppelt
+% - r, b0, d0, z erklären
+% - Formel für h
 
 \section{Evaluation}
 \label{sec:evaluation}
