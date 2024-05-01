@@ -48,8 +48,8 @@
   long = off-the-shelf,
 }
 
-\newcommand\MP{\ensuremath{\mathrm{MP}}}
-\newcommand\SNR{\ensuremath{\mathrm{SNR}}}
+\newcommand\MP{\ensuremath{\mathrm{MP}}\xspace}
+\newcommand\SNR{\ensuremath{\mathrm{SNR}}\xspace}
 
 \DeclareAcronym{tiff}{
   short = TIFF,
@@ -64,6 +64,11 @@
 \DeclareAcronym{awgn}{
   short = AWGN,
   long = additive white Gaussian noise,
+}
+
+\DeclareAcronym{pdf}{
+  short = PDF,
+  long = probability-density function
 }
 
 \DeclareAcronym{leo}{
@@ -471,9 +476,9 @@ Since the satellite channel characteristics heavily depend on shadowing conditio
 they cannot be accurately modeled using a single distribution.
 Typically, multiple states describing different degrees of scheduling are introduced 
 and the overall pdf is given as a sum of of the individual state pdfs multiplied by the probabilities of being in a given state.
-For example, assuming a two-state model with line-of-sight (LOS) and shadow conditions: 
+For example, assuming a two-state model with \ac{los} and shadow conditions: 
 \begin{equation}
-f_{overall}(r) = p_{los}f_{los}(r) + p_{shadow}f_{shadow}(r)
+f_{\mathrm{overall}}(r) = p_{\mathrm{los}}f_{\mathrm{los}}(r) + p_{\mathrm{shadow}}f_{\mathrm{shadow}}(r)
 \end{equation}
 
 Furthermore, to add more details, e.g. state duration, Markov chain models can be introduced.
@@ -482,27 +487,33 @@ and the state transition probability matrix, which contains the probability of c
 
 The Fontan's channel model is a three-state Markov chain model containing the following states:
 \begin{itemize}
-  \item LOS (no shadowing)
+  \item \ac{los} (no shadowing)
   \item shadow (moderate shadowing conditions)
   \item deep shadow (heavy shadowing conditions)
 \end{itemize}
 
 In each state, the channel is modeled using Loo distribution~\cite{}. 
-The overall received signal is described as a sum of the log-normally distributed direct component and Rayleigh distributed multipath component with parameters $\alpha$, $\psi$ and $MP$.
-The log-normal distribution is characterized by mean $\alpha$ and standard deviation $\psi$ and Rayleigh distribution by its average power $MP$.
-Different values for $\alpha$, $\psi$ and $MP$ are chosen depending on the state and elevation angle.
-The pdf is as follows:
+The overall received signal is described as a sum of the log-normally distributed direct component and Rayleigh distributed multipath component with parameters $\alpha$, $\psi$ and \MP.
+The log-normal distribution is characterized by mean $\alpha$ and standard deviation $\psi$ and Rayleigh distribution by its average power \MP.
+Different values for $\alpha$, $\psi$ and \MP are chosen depending on the state and elevation angle.
+The \ac{pdf} is as follows:
 \begin{equation}
-  p(r) = \frac{r}{b_0\sqrt{2\pi d_0}} \int_{0}^{\infty}\frac{1}{z} exp\left[-\frac{(\ln z - \mu)^2}{2d_0} - \frac{r^2 + z^2}{2b_0}\right] \cdot I_0\left(\frac{rz}{b_0}\right) dz
+  \begin{aligned}
+  p(r) &= \frac{r}{b_0\sqrt{2\pi d_0}} \\[1ex]
+  &\hphantom{=} \cdot \int_{0}^{\infty}\frac{1}{z} \exp\left[-\frac{(\ln z - \mu)^2}{2d_0} - \frac{r^2 + z^2}{2b_0}\right] \\[1ex]
+  &\hphantom{=\int_{0}^{\infty}} \cdot I_0\Big(\frac{rz}{b_0}\Big)\ dz
+  \end{aligned}
 \end{equation}
 
-whereby there the following dependencies exist between $mu$, $d_0$ and $b_0$ and $\alpha$, $\psi$ and $MP$:
+whereby there the following dependencies exist between $mu$, $d_0$ and $b_0$ and $\alpha$, $\psi$ and \MP:
 \begin{align}
-\alpha &= 20\log_{10}(e^\mu)  & \psi &= 20\log_{10}(e^{\sqrt{d_0}}) & MP &= 10\log_{10(2b_0)}  
+\alpha &= 20\log_{10}(e^\mu) \\
+  \psi &= 20\log_{10}(e^{\sqrt{d_0}}) \\
+   \MP &= 10\log_{10(2b_0)}  
 \end{align}
 
 Next, we consider the Gaussian noise $n$. We follow the approach presented in~\cite{LCN23}. 
-We first compute the typical SNR values. 
+We first compute the typical \ac{snr} values. 
 To this end, we determine the distance $d$ between the satellite and the ground station based on the current elevation angle $\epsilon_0$ and Earth radius $R_E = 6378 km$ as described in \cite{}:
 %
 \begin{equation}
@@ -520,7 +531,7 @@ where $B$ and $T$ denote the bandwidth and noise temperature respectively and $k
 We compute the noise temperature as the sum of the antenna temperature $T_a = 290 K$ and the receiver noise temperature $T_e$, which is determined as:
 %
 \begin{equation}
-  T_e = T_0(F_{\mathrm{sys}} - 1),
+  T_e = T_0 \big(F_{\mathrm{sys}} - 1 \big),
 \end{equation}
 %
 $T_0 = 290$\,K is the reference temperature and $F_{sys} = 2$\,dB denotes the receiver's noise figure.
@@ -552,7 +563,7 @@ Finally, we compute the noise vector $n$ as follows:
 In this section, we evaluate JSCC\_AF and compare the results against multiple neural networks trained individually for each parameter set.
 We evaluate using statistical data from \cite{channel_values}. 
 They provide values for $\alpha$, $\psi$ and MP for five different environments (open, suburban, intermediate tree-shadow, heavy tree-shadow, urban).
-The measurements were conducted for 40, 60, 70 and 80 elevation angles.
+The measurements were conducted for 40, 60, 70, and 80 elevation angles.
 Three states describing different shadowing conditions are introduced: line-of-sight (LOS), intermediate shadow, and deep shadow.
 First, we evaluate how JSCC without AF performs on the data to identify how various parameter combinations influence the results.
 We consider different environments, states, compression ratios and elevation angles. 
