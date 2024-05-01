@@ -249,11 +249,31 @@ We conclude the paper in \Cref{sec:conclusion}.
 \section{Related Work}
 \label{sec:related_work}
 
-\begin{itemize}
-  \item LCN23
-  \item Channel models for satellites
-  \item Attention modules
-\end{itemize}
+% \begin{itemize}
+%   \item LCN23
+%   \item Channel models for satellites
+%   \item Attention modules
+% \end{itemize}
+
+%Shannon
+%JSCC without deep learing
+% DJSCC separate source, separate channel, joint
+% Aber hat noch keiner mit sat ausprobiert -> canal modelle
+% Attention modules
+% Channel mismatch
+
+Source and channel coding are two essential components of a communication system with obviously interdependent objectives. While the goal of source coding is to reduce the amount of data to be transmitted by eliminating redundancies, channel coding adds redundancies to protect the data against possible transmission errors.  
+Combining source and channel coding has been an active research topic over the last decades. Gallager gave the lower bound of lossless JSCC~\cite{gallager1968information}. Zhong et al. provide a systematic comparison between JSCC and SSCC error exponents~\cite{1614076} and derive lower and upper bounds for the error exponent for asymmetric two-user source-channel system~\cite{4557472}.
+Apart from theoretical studies, various practical JSCC schemes have been proposed.
+Yu et al. use optimization techniques to jointly optimize source and channel coding parameters to minimize energy consumption~\cite{Wei2004}. 
+Xu et al. consider distributed JSCC for video transmission~\cite{4205066}. 
+
+Recently, deep-learning-based methods have been successfully applied for source coding as well as for channel coding. In particular, various studies show that deep source coding is able to outperform traditional source coding techniques, such as JPEG and JPEG2000~\cite{toderici2016variable, ballé2017endtoend, Hu2022}.
+Similarly, in the field of channel coding, O'Shea et al. have demonstrated that performance close to Hamming code can be achieved using an encoder-decoder architecture~\cite{8054694}. 
+Based on these results, the use of deep learning has been extended to JSCC.
+One of the first encoder-decoder architectures combining source coding, channel coding and modulation have been proposed by Bourtsoulatze et al.~\cite{Bourtsoulatze2019}. Later works addressed the limitations of this approach by considering such topics as correlated sources~\cite{Xuan2021}, progressive image transmission~\cite{Kurka2021} and adaptive rate control~\cite{yang2021_2}.
+Also, the use of attention modules has been proposed to dynamically adapt to different SNR levels~\cite{9438648}. 
+Furthermore, Kondrateva et al. proposed a JSCC encoder-decoder architecture suitable for transmission of satellite images. In contrast to our approach, these works limit their consideration to simplistic channel models that do not take into account the specifics of satellite communication.
 
 
 
