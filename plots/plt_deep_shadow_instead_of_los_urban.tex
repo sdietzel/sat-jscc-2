@@ -1,68 +1,65 @@
 \begin{tikzpicture}
     \begin{axis}[
-        %width=18cm,height=8cm,
         width=\linewidth,
+        height=.6\linewidth,
         xlabel = {Compression ratio},
         ylabel = {PSNR},
-        legend style={at={(0.45,-0.25)},anchor=north},
-        legend cell align={left},
-        ymin = 25.0,
+        ymin = 30,
         ymax = 70,
-        %legend pos=south east,
-		cycle list name=bwb,
-		%legend columns=2,
-		transpose legend,
-		column sep=5pt,
+        ylabel near ticks,
+        xtick = data,
+        x tick label style={
+            rotate=45,
+            /pgf/number format/fixed,
+            /pgf/number format/precision=2,
+        },
+        x label style={below=1em},
         ]
 
 
-        \addplot[tol1!60, thick] 
+        \addplot[mark=triangle*,plt1, thick] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_40_urban_deep_shadow_deep_shadow};
         
-        \addplot[tol1!60, thick, dotted] 
+        \addplot[mark=square*,plt1, thick, dotted] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_40_40_urban_los_deep_shadow};
 
-        \addplot[tol2!60, thick] 
+        \addplot[mark=triangle*,plt2, thick] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_80_urban_deep_shadow_deep_shadow};
 
-
-        \addplot[tol2!60, thick, dotted] 
+        \addplot[mark=square*,plt2, thick, dotted] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_80_80_urban_los_deep_shadow};
 
-
-        \addplot[tol3!60, thick] 
+        \addplot[mark=triangle*,plt3, thick] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/AF_SNR_40_urban_deep_shadow_deep_shadow};
 
-
-        \addplot[tol3!60, thick, dotted] 
+        \addplot[mark=square*,plt3, thick, dotted] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/AF_SNR_40_40_urban_los_deep_shadow};
 
-        \addplot[tol4!60, thick] 
+        \addplot[mark=triangle*,plt4, thick] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/AF_SNR_80_urban_deep_shadow_deep_shadow};
 
-
-        \addplot[tol4!60, thick, dotted] 
+        \addplot[mark=square*,plt4, thick, dotted] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/AF_SNR_80_80_urban_los_deep_shadow};
 
 
-        \legend{
-            no\_af\_deep\_shadow\_deep\_shadow 40,
-            no\_af\_los\_deep\_shadow 40, 
-            no\_af\_deep\_shadow\_deep\_shadow 80,
-            no\_af\_los\_deep\_shadow 80,
-            af\_snr\_deep\_shadow\_deep\_shadow 40,
-            af\_snr\_los\_deep\_shadow 40,
-            af\_snr\_deep\_shadow\_deep\_shadow 80,
-            af\_snr\_los\_deep\_shadow 80, 
-            }
+        % \legend{
+        %     no\_af\_deep\_shadow\_deep\_shadow 40,
+        %     no\_af\_los\_deep\_shadow 40, 
+        %     no\_af\_deep\_shadow\_deep\_shadow 80,
+        %     no\_af\_los\_deep\_shadow 80,
+        %     af\_snr\_deep\_shadow\_deep\_shadow 40,
+        %     af\_snr\_los\_deep\_shadow 40,
+        %     af\_snr\_deep\_shadow\_deep\_shadow 80,
+        %     af\_snr\_los\_deep\_shadow 80, 
+        %     }
 
 
     \end{axis}
