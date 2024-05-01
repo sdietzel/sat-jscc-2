@@ -51,6 +51,8 @@
 \newcommand\MP{\ensuremath{\mathrm{MP}}\xspace}
 \newcommand\SNR{\ensuremath{\mathrm{SNR}}\xspace}
 
+\newcommand\ours{\textsc{JscCaF}\xspace}
+
 \DeclareAcronym{tiff}{
   short = TIFF,
   long = tag image file format,
@@ -566,15 +568,72 @@ Finally, we compute the noise vector $n$ as follows:
 \section{Evaluation}
 \label{sec:evaluation}
 
-In this section, we evaluate JSCC\_AF and compare the results against multiple neural networks trained individually for each parameter set.
+\begin{table}
+  \caption{Channel Parameters}
+  \label{tab:channel_parameters}
+
+  \centering
+	\begin{tabular}{ll}
+		\toprule
+    Parameter & Value \\
+    \midrule
+		Orbit height & 150\,km \\
+		Carrier frequency & 2150\,MHz \\
+    Transmitted power & 1\,W \\
+    Satellite antenna gain & 6\,dBi \\
+    Ground station antenna gain & 35\,dBi \\
+		Receive channel bandwidth & 750\,kHz \\
+		Noise figure & 2\,dB \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+%%% FROM LAST YEAR %%%
+
+In this section, we evaluate the \ac{jscc-sat} approach by comparing it to \jpegtwok, 
+which is commonly used for compression of satellite images~\cite{sentinel-2-user-handbook}.
+We use the BigEarth dataset~\cite{sumbul2019bigearthnet,Sumbul2021}, which is a collection of 590,326 multi-spectral images acquired by \sentinelii, as explained in \Cref{sub:eo}.
+More specifically, we use a subset of all images contained in the dataset, which cover the area of Serbia in the summer months.
+We remove cloudy images from the dataset with the help of a script provided by the BigEarthNet authors, following common evaluation practices.
+In total, 14,439 multi-spectral images remain in the filtered dataset.
+Each multi-spectral image is represented by 12 individual files, where each file encodes one of the bands using the lossless \ac{tiff} format.
+The dataset was then further divided into training, validation, and test sets.
+Since the individual bands in the dataset have different resolutions (see \Cref{tab:sentinel_bands}), we used cubic interpolation to resize all image files to the same size.
+The dataset contains 12 bands. \sentinelii's band 10 contains information about clouds is not included in the dataset, since it is not useful for training.
+Finally, the pixel values were normalized so that they are between 0 and 1.
+
+To apply \ac{jscc-sat}, we implement the neural network architecture described in \Cref{sec:jscc} using Keras\footnote{Website: https://keras.io/} and Tensorfow.\footnote{Website: https://www.tensorflow.org/}
+The batch size was set to 32, and the learning rate was set to $10^{-3}$ and adjusted to $10^{-4}$ after 500 epochs.
+We used Adam as optimizer, which is a form of stochastic gradient descent.
+A separate neural network was trained till convergence for each SNR value.
+
+We further computed the \ac{snr} values using the formulas described in \Cref{sub:link_budget} and the parameters from \Cref{tab:channel_parameters}.
+As main varying factor, we consider the satellites elevation angle relative to the ground station to cover a wide range of possible transmission environments.
+\Cref{fig:snr_elevation} shows the \acp{snr} depending on the elevation angle.
+A separate neural network is trained for each \ac{snr} value.
+
+We consider two simulation scenarios:
+%
+\begin{enumerate}
+  \item We compare \ac{jscc-sat} against \jpegtwok with maximum rate for source compression, that is, assuming guaranteed reliable transmission according to Shannon's separation theorem, to obtain an upper bound for the performance of \jpegtwok.
+  \item We compare \ac{jscc-sat} against \jpegtwok with additional channel coding using \ac{ldpc} for a more realistic upper bound.
+\end{enumerate}
+
+For both scenarios, we compare the achieved image quality measured using \ac{psnr} values for various realistic \ac{snr} values.
+The higher the \ac{psnr} values of the reconstructed images, the better the image quality.
+
+%%% END FROM LAST YEAR %%%
+
+
+In this section, we evaluate \ours and compare the results against multiple neural networks trained individually for each parameter set.
 We evaluate using statistical data from \cite{channel_values}. 
-They provide values for $\alpha$, $\psi$ and MP for five different environments (open, suburban, intermediate tree-shadow, heavy tree-shadow, urban).
+They provide values for $\alpha$, $\psi$ and \MP for five different environments (open, suburban, intermediate tree-shadow, heavy tree-shadow, urban).
 The measurements were conducted for 40, 60, 70, and 80 elevation angles.
 Three states describing different shadowing conditions are introduced: line-of-sight (LOS), intermediate shadow, and deep shadow.
 First, we evaluate how JSCC without AF performs on the data to identify how various parameter combinations influence the results.
 We consider different environments, states, compression ratios and elevation angles. 
-Then we compare the performance of JSCC\_AF against JSCC.
-Finally, we compare JSCC\_AF against JSCC in the case of state mismatch, i.e. when the actual channel state differs from what we expected.
+Then we compare the performance of \ours against JSCC.
+Finally, we compare \ours against JSCC in the case of state mismatch, i.e. when the actual channel state differs from what we expected.
 
 \begin{figure*}[t!]
   \begin{subfigure}{.32\linewidth}
