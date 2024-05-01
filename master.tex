@@ -48,6 +48,9 @@
   long = off-the-shelf,
 }
 
+\newcommand\MP{\ensuremath{\mathrm{MP}}}
+\newcommand\SNR{\ensuremath{\mathrm{SNR}}}
+
 \DeclareAcronym{tiff}{
   short = TIFF,
   long = tag image file format,
@@ -101,6 +104,11 @@
 \DeclareAcronym{prelu}{
   short = PReLU,
   long = parameterized rectified linear unit,
+}
+
+\DeclareAcronym{relu}{
+  short = ReLU,
+  long = rectified linear unit,
 }
 
 \DeclareAcronym{jscc-sat}{
@@ -419,41 +427,34 @@ The structure of the residual blocks is shown in \Cref{fig:residual}.
 Each residual block is followed by an attention module as proposed in \cite{wireless-attention-modules}.
 \Cref{fig:attention} shows the structure of the attention modules.
 These modules allow to alter the feature weights of their preceding residual blocks in order to accommodate different channel conditions.
+To do so, a number of channel parameters are added as additional input to the attention modules.
+Based on these parameters, a number of scaling parameters are learned that either increase or decrease the connection strength to the next module, depending on the specific channel condition.
+The attention modules operate in three steps.
+First, global average pooling is applied to the previous residual block's output, which serves to make available global context information.
+The pooled output is then concatenated with variables representing channel parameters.
+Second, a simple neural network structure -- two fully connected layers plus \ac{relu} and sigmoid as activation functions -- is used to predict the proper scaling factors based on the channel condition parameters.
+Finally, the previous residual layer's output is multiplied with the predicted scaling factors to implement the attention-based scaling.
 
+As last layer of the encoder component, we use a convolutional layer that contains $c$ filters.
+The value for $c$ is chosen based on the desired compression ratio $k/n$.
+Finally, \ac{prelu} is used as activation function.
+The result is a vector $\tilde{z}$ comprising $k$ complex numbers, which represent the channel symbols.
 
-%%%% TODO REWRITE FROM HERE %%%%
-
-
-AF module takes the SNR and the output of the FL module as the input and produces a sequence of scaling parameters. The product of the outputs of the FL module and the AF module can be seen as a filtered version of the FL module output.
-
-The channel relationship are captured and different scaling parameters are generated for different channel features to increase or suppress their connection strength to the next layer. The aforementioned mechanism is channel-wise soft attention1 .
-
-1) context extraction; 2) factor prediction; and 3) feature recalibration
-
-1) global average pooling on output to extract global information, concatenate with channel params
-2) use simple structure with fcl to predict feature importance based on channel params
-3) calibrate feature importance based on fcl output
-
-The last layer is a convolutional layer consisting of $c$ filters, where $c$ is determined by the compression ratio $k/n$.
-We use a \ac{prelu} as activation function, which generalizes the traditional ReLU by introducing a learnable parameter, which improves predictions.
-The output of the encoder is combined into a vector $\tilde{z}$ of $k$ complex-valued numbers representing the channel symbols.
-
-The next layer is a non-trainable channel layer that gives a realistic representation of ... channel model ... see \Cref{sub:channel_model}.
+To learn and predict the actual channel conditions, the middle component of the encoder-decoder architecture ia a non-trainable channel layer, which models a realistic representation of the channel conditions in satellite communication.
+For the channel, we assume a log-normal distribution with mean $\alpha$ and standard deviation $\psi$, a Rayleigh-distributed multi-path component \MP, and a signal-to-noise parameter \SNR.
+We present the channel model in more detail in \Cref{sub:channel_model}.
 
 The block on the right serves as neural network decoder, which translates the -- potentially corrupted channel symbols $\hat{z}$ back to an approximation $\hat{x}$ of the original data.
+The decoder follows the same architecture design as the encoder: a convolutional transpose layer is followed by four residual transpose blocks plus corresponding attention modules,  another convolutional transpose layer, and a \ac{prelu} activation function.
 
-Similar to encoder, the decoder consists of a convolutional transpose layer, four residual transpose blocks (see \Cref{fig:residual-transpose}), another convolutional transpose layer, and a \ac{prelu} activation function.
-
-During evaluation, use the \ac{psnr} as a metric to determine the quality of the reconstructed image as follows:
+As reward function during model training and to evaluate the quality of the reconstructed image signal, we use the \ac{psnr} metric:
 %
 \begin{equation}
   \mathrm{PSNR} = 10 \log_{10}\frac{\mathrm{MAX}^2}{\mathrm{MSE}},
 \end{equation}
 %
 where $\mathrm{MAX}$ is the maximum possible pixel value.
-
-Intuitively, \ac{psnr} expresses the ratio between the maximum possible signal value and the distorting noise that reduces its quality.
-The metric is often used to measure the reconstruction quality of lossy compression codecs, as it approximates human perception of the reconstruction quality.
+The \ac{psnr} captures to what extent original signal value is affected by distorting noise as a fraction between the maximum signal and noise.
 
 
 \subsection{Channel model for \ac{leo} satellites}
@@ -545,10 +546,6 @@ Finally, we compute the noise vector $n$ as follows:
 \end{equation}
 %
 
-
-\subsection{Attention Modules}
-
-anderes paper zusammen fassen
 
 \section{Evaluation}
 \label{sec:evaluation}
