@@ -25,7 +25,7 @@
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_40_urban_los_los};
         
-        \addplot[mark=triangle*,plt1, thick, dotted] 
+        \addplot[mark=triangle*,mark options=solid,plt1, thick, dashed] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_40_40_urban_deep_shadow_los};
 
@@ -33,7 +33,7 @@
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_80_urban_los_los};
 
-        \addplot[mark=triangle*,plt2, thick, dotted] 
+        \addplot[mark=triangle*,mark options=solid,plt2, thick, dashed] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/no_AF_80_80_urban_deep_shadow_los};
 
@@ -44,7 +44,7 @@
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/AF_SNR_40_urban_los_los};
 
 
-        \addplot[mark=square*,plt3, thick, dotted] 
+        \addplot[mark=square*,mark options=solid,plt3, thick, dashed] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/AF_SNR_40_40_urban_deep_shadow_los};
 
@@ -54,7 +54,7 @@
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/AF_SNR_80_urban_los_los};
 
 
-        \addplot[mark=square*,plt4, thick, dotted] 
+        \addplot[mark=square*,mark options=solid,plt4, thick, dashed] 
         plot 
         table[x expr=\thisrowno{0}, y expr=\thisrowno{1}, col sep=space] {plots/AF_SNR_80_80_urban_deep_shadow_los};
 
@@ -71,10 +71,10 @@
         %     }
 
         \legend{
-            Baseline / correct / 40\textdegree,
-            Baseline / error / 40\textdegree, 
-            Baseline / correct / 80\textdegree,
-            Baseline / error / 80\textdegree,
+            \baseline{} / correct / 40\textdegree,
+            \baseline{} / error / 40\textdegree, 
+            \baseline{} / correct / 80\textdegree,
+            \baseline{} / error / 80\textdegree,
             \ours{} / correct / 40\textdegree,
             \ours{} / error / 40\textdegree, 
             \ours{} / correct / 80\textdegree,
