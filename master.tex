@@ -500,7 +500,7 @@ We compute the channel output symbols $\hat{z}$ as follows:
 where $h$ denotes channel gain and $n$ Gaussian noise.
 Next, we explain how $h$ and $n$ are calculated.
 
-To account for specific satellite channel conditions, we compute $h$ using Fontan's statistical channel~\cite{} model. 
+To account for specific satellite channel conditions, we compute $h$ using Fontan's statistical channel~\cite{966585} model. 
 Since the satellite channel characteristics heavily depend on shadowing conditions, in general, 
 they cannot be accurately modeled using a single distribution.
 Typically, multiple states describing different degrees of scheduling are introduced 
@@ -511,7 +511,7 @@ f_{\mathrm{overall}}(r) = p_{\mathrm{los}}f_{\mathrm{los}}(r) + p_{\mathrm{shado
 \end{equation}
 
 Furthermore, to add more details, e.g. state duration, Markov chain models can be introduced.
-Then, the propagation channel at a given time is described by the state probability matrix, which contains the of being in a particular state
+Then, the propagation channel at a given time is described by the state probability matrix, which contains the probabilities of being in a particular state
 and the state transition probability matrix, which contains the probability of changing from state $i$ to state $j$.
 
 The Fontan's channel model is a three-state Markov chain model containing the following states:
@@ -521,7 +521,7 @@ The Fontan's channel model is a three-state Markov chain model containing the fo
   \item deep shadow (heavy shadowing conditions)
 \end{itemize}
 
-In each state, the channel is modeled using Loo distribution~\cite{}. 
+In each state, the channel is modeled using Loo distribution~\cite{1623307}. 
 The overall received signal is described as a sum of the log-normally distributed direct component and Rayleigh distributed multipath component with parameters $\alpha$, $\psi$ and \MP.
 The log-normal distribution is characterized by mean $\alpha$ and standard deviation $\psi$ and Rayleigh distribution by its average power \MP.
 Different values for $\alpha$, $\psi$ and \MP are chosen depending on the state and elevation angle.
@@ -533,13 +533,34 @@ The \ac{pdf} is as follows:
   &\hphantom{=\int_{0}^{\infty}} \cdot I_0\Big(\frac{rz}{b_0}\Big)\ dz
   \end{aligned}
 \end{equation}
-
-whereby there the following dependencies exist between $mu$, $d_0$ and $b_0$ and $\alpha$, $\psi$ and \MP:
+where $I_0(\cdot)$ is the modified Bessel function of zeroth order.
+The following dependencies exist between $\mu$, $d_0$ and $b_0$ and $\alpha$, $\psi$ and \MP:
 \begin{align}
 \alpha &= 20\log_{10}(e^\mu) \\
   \psi &= 20\log_{10}(e^{\sqrt{d_0}}) \\
    \MP &= 10\log_{10}(2b_0)
 \end{align}
+
+We simulate the Fontan's model as described in \cite{DBLP:journals/ijscn/Perez-FontanMMPMMR08}:
+
+\begin{equation}
+  multipath = \MP \times \bigl[\mathcal{N}(0,1) + j * \mathcal{N}(0,1) \bigr] 
+\end{equation}
+
+\begin{equation}
+  direct = \mathcal{N}(\alpha,\psi)
+\end{equation}
+
+\begin{equation}
+  direct\_linear = 10^{\frac{direct}{20}}
+\end{equation}
+
+\begin{equation}
+  h = direct\_linear + multipath
+\end{equation}
+
+To compute the multipath vector, we generate two series of normally distributed variables and multiply them by $MP$.
+To compute the direct signal vector, we generate a series of normally distributed variables with mean $\alpha$ and standard deviation $\psi$, which we then convert to linear units. Finally, two series are added (complex addition). Note that we do not model Doppler spread since we assume that the receiver is stationary and we do not model Doppler shift since the variations caused by Doppler shift are typically slow and can be corrected at the receiver~\cite{DBLP:journals/ijscn/Perez-FontanMMPMMR08}. 
 
 Next, we consider the Gaussian noise $n$. We follow the approach presented in~\cite{satjscc}. 
 We first compute the typical \ac{snr} values. 
