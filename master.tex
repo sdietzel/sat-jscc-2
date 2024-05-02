@@ -308,32 +308,32 @@ For our evaluation we chose Fontan's model \cite{966585}, as it was tested for a
   \label{fig:sentinelii}
 \end{figure*}
 
-\begin{table}
-  \caption{\sentinelii Spectrum Bands}
-  \label{tab:sentinel_bands}
+% \begin{table}
+%   \caption{\sentinelii Spectrum Bands}
+%   \label{tab:sentinel_bands}
 
-  \centering
-  \begin{tabular}{llcc}
-    \toprule
-    Band & Measurement & Central wavelength & Resolution \\
-    \midrule
-    1 & Coastal aerosol & 443 nm & 60 m \\
-    2 & Blue & 490 nm & 10 m \\
-    3 & Green & 560 nm & 10 m \\
-    4 & Red & 665 nm & 10 m \\
-    5 & Vegetation red edge & 705 nm & 20 m \\
-    6 & Vegetation red edge & 740 nm & 20 m \\
-    7 & Vegetation red edge & 783 nm & 20 m \\
-    8 & Near infrared & 842 nm & 10 m \\
-    8A & Narrow near infrared & 865 nm & 20 m \\
-    9 & Water vapour & 940 nm & 60 m \\
-    10 & Short wave infrared: cirrus & 1375 nm & 60 m \\
-    11 & Short wave infrared & 1610 nm & 20 m \\
-    12 & Short wave infrared & 2190 nm & 20 m \\
-    \bottomrule
-  \end{tabular}
+%   \centering
+%   \begin{tabular}{llcc}
+%     \toprule
+%     Band & Measurement & Central wavelength & Resolution \\
+%     \midrule
+%     1 & Coastal aerosol & 443 nm & 60 m \\
+%     2 & Blue & 490 nm & 10 m \\
+%     3 & Green & 560 nm & 10 m \\
+%     4 & Red & 665 nm & 10 m \\
+%     5 & Vegetation red edge & 705 nm & 20 m \\
+%     6 & Vegetation red edge & 740 nm & 20 m \\
+%     7 & Vegetation red edge & 783 nm & 20 m \\
+%     8 & Near infrared & 842 nm & 10 m \\
+%     8A & Narrow near infrared & 865 nm & 20 m \\
+%     9 & Water vapour & 940 nm & 60 m \\
+%     10 & Short wave infrared: cirrus & 1375 nm & 60 m \\
+%     11 & Short wave infrared & 1610 nm & 20 m \\
+%     12 & Short wave infrared & 2190 nm & 20 m \\
+%     \bottomrule
+%   \end{tabular}
   
-\end{table}
+% \end{table}
 
 With recent advances in space and image sensing technologies, Earth observation using small satellites has gained more and more attention over the past years.
 As an example use case for the methods we propose in this paper, we briefly introduce ESA's \sentinelii mission.
@@ -344,7 +344,8 @@ Moreover, we give an overview of how neuronal networks are used onboard satellit
 The first satellites were launched in 2015, with more launches following in 2017 and 2024.
 The missions comprise two satellites, which orbit the Earth such that each spot on the surface is revisited approximately every five days.
 With their sensors, they cover a strip of land that is 290 km wide with each pass.
-In addition to visible light sensors, the satellites are equipped with sensors that cover additional frequencies, such as infrared \cite{sentinel-2-user-handbook}, which allow to capture land use and vegetation (cf. \Cref{tab:sentinel_bands}).
+In addition to visible light sensors, the satellites are equipped with sensors that cover additional frequencies, such as infrared \cite{sentinel-2-user-handbook}, which allow to capture land use and vegetation.
+In total, the satellite images comprise information in 12 different bands. %(cf. \Cref{tab:sentinel_bands}).
 Moreover, the sensors feature relatively high optical resolutions between 10 and 60 meters.
 
 % https://www.esa.int/ESA_Multimedia/Images/2024/03/Earth_from_Space_Southeast_Kenya
