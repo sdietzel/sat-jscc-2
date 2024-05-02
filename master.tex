@@ -1,4 +1,5 @@
 \documentclass[conference]{IEEEtran}
+
 \IEEEoverridecommandlockouts
 
 \usepackage{cite}
@@ -11,6 +12,7 @@
 
 \usepackage{tikz}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 
 \usepackage{cleveref}
 \usepackage{csquotes}
@@ -545,7 +547,7 @@ whereby there the following dependencies exist between $mu$, $d_0$ and $b_0$ and
    \MP &= 10\log_{10}(2b_0)
 \end{align}
 
-Next, we consider the Gaussian noise $n$. We follow the approach presented in~\cite{LCN23}. 
+Next, we consider the Gaussian noise $n$. We follow the approach presented in~\cite{satjscc}. 
 We first compute the typical \ac{snr} values. 
 To this end, we determine the distance $d$ between the satellite and the ground station based on the current elevation angle $\epsilon_0$ and Earth radius $R_E = 6378\,\textrm{km}$ as described in \cite{}:
 %
