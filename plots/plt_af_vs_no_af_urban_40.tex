@@ -7,7 +7,7 @@
         legend cell align={left},
         ymin = 50.0,
         ymax = 70,
-		legend columns=6,
+		legend columns=3,
 		legend style={/tikz/every even column/.append style={column sep=1em}},
         ylabel near ticks,
         xtick = data,
@@ -47,12 +47,12 @@
 
 
         \legend{
-            los,
-            shadow, 
-            deep shadow,
-            los af,
-            shadow af,
-            deep shadow af
+            \baseline{} / LOS,
+            \baseline{} / shadow, 
+            \baseline{} / deep shadow,
+            \ours{} / LOS,
+            \ours{} / shadow,
+            \ours{} / deep shadow
             }
 
 
