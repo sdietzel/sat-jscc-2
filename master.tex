@@ -284,19 +284,19 @@ For our evaluation we chose Fontán et al.'s model \cite{966585}, as it was test
 \label{sec:system_model}
 
 \begin{figure*}
-  \begin{subfigure}{.32\linewidth}
+  \begin{subfigure}{.3\linewidth}
     \includegraphics[width=\linewidth]{figures/Earth_from_Space_Southeast_Kenya}
     \caption{Southeast Kenya}
     \label{fig:sentinel_kenya}
   \end{subfigure}
   \hfill
-  \begin{subfigure}{.32\linewidth}
+  \begin{subfigure}{.3\linewidth}
     \includegraphics[width=\linewidth]{figures/Saharan_dust_plume}
     \caption{Sahara dust}
     \label{fig:sentinel_sahara}
   \end{subfigure}
   \hfill
-  \begin{subfigure}{.32\linewidth}
+  \begin{subfigure}{.3\linewidth}
     \includegraphics[width=\linewidth]{figures/Wildfires_continue_to_rage_in_Greece}
     \caption{Wildfires in Greece}
     \label{fig:sentinel_greece}
@@ -663,7 +663,7 @@ After filtering out cloudy images, which do not contribute a valuable signal, 14
 We use cubic interpolation to extrapolate all spectral bands to the same image resolution and represent pixel values as normalized values between 0 and 1.
 
 During training, we set the batch size to 32; the learning rate is $10^{-3}$ and adjusted to $10^{-4}$ after 500 epochs; and Adam is used as a stochastic gradient descent.
-All code was written using Keras\footnote{Website: https://keras.io/} and Tensorflow.\footnote{Website: https://www.tensorflow.org/}
+All code was written using Keras \cite{keras} and Tensorflow \cite{tensorflow}.
 
 To represent different channel conditions, we use statistical measurements for $\alpha$, $\psi$, and \MP obtained in different environments and channel states \cite{channel-params}.
 These measurements were conducted for a range of elevation angles from 40\textdegree to 80\textdegree.
@@ -680,11 +680,10 @@ We consider three evaluation scenarios:
   \item We compare \ours against the \baseline in a scenario where the detected channel state differs from the actual channel state, and thus, the wrong network or attention module parametrization are used.
 \end{enumerate}
 
-For all scenarios, we compare the achieved image quality measured using \ac{psnr} -- higher values indicate better image quality.
+For all scenarios, we compare the image quality measured using \ac{psnr} -- higher values indicate better image quality.
 
-While adding attention modules incurs additional overhead, 
-it remains neglectable in our case. 
-The attention module parameters comprise only $0.25\%$ of the total \ours model parameters.  
+While adding attention modules incurs additional overhead, it is negatable in our case. 
+The attention module parameters comprise only $0.25\%$ of all model parameters in \ours.  
 However, a single \ours model captures a range of channel conditions, significantly reducing the overall storage overhead.
 Specifically, we train a single \ours model for the three channel states and different \ac{snr} values.
 Different models are still used for different environments and compression ratios, as we assume these parameters to change less frequently.

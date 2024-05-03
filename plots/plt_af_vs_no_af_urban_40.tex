@@ -1,19 +1,18 @@
 \begin{tikzpicture}
     \begin{axis}[
         width=\linewidth,
-        height=.5\linewidth,
+        height=.53\linewidth,
         xlabel = {Compression ratio},
         ylabel = {PSNR},
         legend cell align={left},
-        ymin = 25,
-        ymax = 75,
-        ytick distance = 10,
+        ymin = 50,
+        ymax = 70,
 		legend columns=3,
 		legend style={/tikz/every even column/.append style={column sep=1em}},
         ylabel near ticks,
         xtick = data,
         x tick label style={
-            rotate=45,
+            rotate=0,
             /pgf/number format/fixed,
             /pgf/number format/precision=2,
         },
