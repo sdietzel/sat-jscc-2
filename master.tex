@@ -180,9 +180,9 @@ we leverage attention modules and train a single adaptable neural network that c
 Our evaluation results show that the proposed approach achieves similar performance when compared to less space efficient schemes that utilize separate neuronal networks for differing channel conditions.   
 \end{abstract}
 
-\begin{IEEEkeywords}
-  cross-layer optimization; AI-enabled networking; small satellite applications
-  \end{IEEEkeywords}
+% \begin{IEEEkeywords}
+%   cross-layer optimization; AI-enabled networking; small satellite applications
+%   \end{IEEEkeywords}
 
 \acresetall
 \section{Introduction}
@@ -686,7 +686,7 @@ Due to the use of attention modules, we expect \ours to perform slightly worse i
 The main goal of our evaluation is, therefore, to determine whether the loss in \ac{psnr} is negligible when compared to the gain in storage efficiency.
 
 
-\begin{figure*}[t!]
+\begin{figure*}
   \begin{subfigure}{.32\linewidth}
   \centering
   \input{plots/plt_no_af_40_los.tex}
@@ -724,7 +724,7 @@ It also can be seen that the results significantly depend on shadowing condition
 While for deep shadow (\Cref{subfig:baseline_deep_shadow}), the performance varies considerably between different environments, 
 the differences become less pronounced as shadowing conditions improve (\Cref{subfig:baseline_shadow,subfig:baseline_los}).
 
-\begin{figure*}[t!]
+\begin{figure*}
   \begin{subfigure}{.32\linewidth}
   \centering
   \input{plots/plt_el_angle_0.04_los.tex}
@@ -795,7 +795,7 @@ In addition, we observe that the chosen compression rate influences the results 
 More specifically, the results suggest that moderate compression rates should be chosen in case of low elevation angles.
 
 
-\begin{figure*}[t!]
+\begin{figure*}
   \begin{subfigure}{.48\linewidth}
   \centering
   \input{plots/plt_af_vs_no_af_urban_40.tex}
