@@ -677,11 +677,12 @@ We consider three evaluation scenarios:
 
 For all scenarios, we compare the achieved image quality measured using \ac{psnr} -- higher values indicate better image quality.
 
-The \baseline model comprises \textbf{TODO TODO} parameters to implement the encoder and decoder for a single set of parameters.
-Due to the added attention modules, a single model of \ours contains \textbf{TODO TODO} parameters, which is a small increase of \textbf{TODO TODO} percent.
+While adding attention modules incurs additional overhead, 
+it remains neglectable in our case. 
+The attention module parameters comprise only $0.25\%$ of the total \ours model parameters.  
 However, a single \ours model captures a range of channel conditions, significantly reducing the overall storage overhead.
 Specifically, we train a single \ours model for the three channel states and different \ac{snr} values.
-Different models are still used for different environments and compression rates, as we assume these parameters to change less frequently.
+Different models are still used for different environments and compression ratios, as we assume these parameters to change less frequently.
 Due to the use of attention modules, we expect \ours to perform slightly worse in terms of \ac{psnr} when compared to a custom tailored model.
 The main goal of our evaluation is, therefore, to determine whether the loss in \ac{psnr} is negligible when compared to the gain in storage efficiency.
 
