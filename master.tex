@@ -277,7 +277,7 @@ All these models are static in the sense that they use a single distribution to 
 To model signal changes over time, dynamic models \cite{966585,4151152,7779114,8693582}, which are mostly based on Markov chains, can be used \cite{9079470}.
 % Fontan's model~\cite{966585} considers three states, which correspond to different degrees of shadowing.
 % Other examples for dynamic models include Scalise’s model~\cite{4151152}, Nikolaidis’ model~\cite{7779114} and Salamanca’s model~\cite{8693582}. A more detailed overview is provided in \cite{9079470}.
-For our evaluation we chose Fontan's model \cite{966585}, as it was tested for a broad range of frequencies in different environments and considers different elevation angles.
+For our evaluation we chose Fontán et al.'s model \cite{966585}, as it was tested for a broad range of frequencies in different environments and considers different elevation angles.
 
 
 \section{Earth Observation Missions}
@@ -499,7 +499,7 @@ We compute the channel output symbols $\hat{z}$ as follows:
 where $h$ denotes channel gain, $n$ is Gaussian noise, and $z$ are the input symbols.
 Next, we explain how $h$ and $n$ are calculated.
 
-To account for specific satellite channel conditions, we compute $h$ using Fontan's statistical channel model~\cite{966585}. 
+To account for specific satellite channel conditions, we compute $h$ using Fontán et al.'s statistical channel model~\cite{966585}. 
 Since the satellite channel characteristics heavily depend on shadowing conditions, 
 they generally cannot be accurately modeled using a single distribution.
 Rather, the model introduces multiple states describing different degrees of shadowing. 
@@ -517,7 +517,7 @@ The model's accuracy is further improved by using Markov chain models to capture
 That is, the propagation channel at a given time is described by the Markov chain's state probability matrix and the state transition probability matrix.
 The former contains the probabilities of being in a particular state, and the latter contains the probability of changing from one state to another.
 
-Specifically, Fontan's channel model \cite{966585} uses a three-state Markov chain containing the following states:
+Specifically, Fontán et al.'s channel model \cite{966585} uses a three-state Markov chain containing the following states:
 %
 \begin{itemize}
   \item \ac{los} (no shadowing)
