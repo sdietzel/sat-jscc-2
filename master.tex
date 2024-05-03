@@ -168,20 +168,16 @@
 \maketitle
 
 \begin{abstract}
-Earth observation using small satellites serves a wide range of relevant applications.
+Earth observation with small satellites serves a wide range of relevant applications.
 However, significant advances in sensor technology (e.g., higher resolution, multiple spectrums beyond visible light) in combination with challenging channel characteristics lead to a communication bottleneck 
 when transmitting the collected data to Earth.
-Recently, joint source coding, channel coding, and modulation using a neuronal-network-based approach has been proposed to combine image compression and communication. %dynamically adapt to the varying communication channel and to take data properties into account.
+Recently, joint source coding, channel coding, and modulation based on neuronal networks has been proposed to combine image compression and communication. %dynamically adapt to the varying communication channel and to take data properties into account.
 Though this approach achieves promising results when applied to standard terrestrial channel models, 
 it remains an open question whether it is suitable for the more complicated and quickly varying satellite communication channel. 
-In this paper, we consider a detailed satellite channel model accounting for different shadowing conditions and train an encoder-decoder architecture using realistic \sentinelii satellite imagery.
-In addition, to reduce the overhead associated with using multiple neural networks for various channel states, 
+In this paper, we consider a detailed satellite channel model accounting for different shadowing conditions and train an encoder-decoder architecture with realistic \sentinelii satellite imagery.
+In addition, to reduce the overhead associated with applying multiple neural networks for various channel states, 
 we leverage attention modules and train a single adaptable neural network that covers a wide range of different channel conditions.
-Our evaluation results show that the proposed approach achieves similar performance when compared to less space efficient schemes using separate neuronal networks for differing channel conditions.   
-% it typically involves training multiple neural networks to account for different channel conditions  
-% In this paper, we propose a novel joint coding scheme that combines image compression, channel coding, and modulation using a neuronal-network-based approach.
-% By combining a detailed channel model for small satellite applications with attention modules, we can use a single adaptable neuronal network to cover a wide range of different channel conditions.
-% We evaluate our approach using realistic \sentinelii satellite imagery and show that it achieves on par performance when compared to less space efficient schemes using separate neuronal networks for differing channel conditions.
+Our evaluation results show that the proposed approach achieves similar performance when compared to less space efficient schemes that utilize separate neuronal networks for differing channel conditions.   
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -198,7 +194,7 @@ First, technological advances have allowed to build smaller satellites, which us
 A prime example are CubeSats, which operate in \ac{leo} and consist of $10 \times 10 \times 10$\,cm units \cite{cubesat2020}.
 Second, sensor technology has improved greatly.
 Besides higher spatial resolution, modern sensors support a wider spectrum range, exceeding that of visible light.
-Hyperspectral images include infrared and other bands, which can be used to monitor vegetation, clouds, and other phenomena. % not represented in the visible light spectrum.
+Hyperspectral images include infrared and other bands, which allow to monitor vegetation, clouds, and other phenomena. % not represented in the visible light spectrum.
 
 These advances in satellite and sensor technology, however, are not met by an equal improvement in communication capacity.
 CubeSats and other small satellites have a constrained energy budget. %, and -- unlike their larger counterparts -- they are not geo-stationary.
@@ -207,21 +203,20 @@ Their high velocity and harsh channel conditions due to weather and low elevatio
 
 Therefore, efficient and robust communication systems are necessary to support demanding Earth observation applications.
 Typically, source coding, channel coding, and modulation schemes are applied to convert image sensor data into physical layer channel symbols.
-Source coding serves to compress sensor images, often using lossy compression schemes, such as \jpegtwok \cite{sentinel-2-user-handbook}.
+Source coding serves to compress sensor images, often in a lossy fashion (e.g., \jpegtwok) \cite{sentinel-2-user-handbook}.
 Channel coding (e.g., \ac{ldpc}) is then used to enable error correction, counteracting packet loss due to the harsh channel conditions.
-More recently, approaches that consider these coding mechanisms jointly have emerged, promising better performance than using individual coding schemes \cite{6408177}.
+More recently, approaches that consider these coding mechanisms jointly have emerged, promising better performance than individual coding schemes \cite{6408177}.
 % Joint coding leverages the data-centric nature of the considered use case: the characteristics of the hyperspectral image sensor data is well known, and therefore, the image data can be translated directly into physical layer symbols rather than using separate source codes, channel codes, and modulation.
-Although Shannon's theory \cite{cover1991elements} states that separate optimization can yield optimal results, its assumptions are not always true in practice, such as infinite code block lengths.
+Although Shannon's theory \cite{cover1991elements} states that separate optimization can yield optimal results, its assumptions, such as infinite code block lengths, are not always true in practice.
 
-The use of neuronal networks has provided a feasible way to implement such a joint coding approach, improving over earlier work, which was too complex to be useful in practice \cite{9838671}.
+Neuronal networks have provided a feasible way to implement such a joint coding approach, improving over earlier work, which was too complex to be useful in practice \cite{9838671}.
 Neuronal-network-based joint coding approaches have been proposed for both terrestrial communication \cite{Bourtsoulatze2019} and satellite applications \cite{satjscc}.
-So far, a major limitation has been that the joint encoder and decoder has been trained based on fixed assumptions about channel characteristics, such as the \ac{snr} using a simple \ac{awgn} channel model. 
+So far, a major limitation has been that the joint encoder and decoder has been trained based on fixed assumptions about channel characteristics, such as the \ac{snr} based on a simple \ac{awgn} channel model. 
 To foster practical application of this approach, 
 a more realistic channel model accounting for specific satellite channel conditions should used.
-Another limitation concerns the adaptability of this approach to changing channel conditions. In the previous work, separate neuronal networks were trained independently under assumption that they can be switched between by both the satellite and the ground station.
-Obviously, this approach restricts the total number of channel parameter combinations that can reasonably be covered.
-Considering more complex channel models %including multi-path propagation, shadowing, and fading 
-would easily lead to a combinatorial explosion of parameters, and consequently a prohibitive amount of separate neuronal networks.
+Another limitation concerns the adaptability of this approach to changing channel conditions. In the previous work, separate neuronal networks were trained independently under the assumption that they can be switched between by both the satellite and the ground station.
+In this scenario, considering more complex channel models would easily lead to a combinatorial explosion of parameters, and consequently a prohibitive amount of separate neuronal networks.
+Therefore, separate networks obviously restrict the total number of channel parameter combinations that can reasonably be covered.
 
 In this paper, we propose a novel joint coding approach for satellite applications that allows to use a single neuronal network for a wide range of channel conditions typical for small satellite applications.
 We use a neuronal network model architecture that is enriched by so-called attention modules to reduce the combinatorial complexity.
