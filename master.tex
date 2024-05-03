@@ -860,6 +860,13 @@ Therefore, we observe that the use of attention module can bring additional bene
 \section{Conclusion}
 \label{sec:conclusion}
 
+Earth observation missions employing modern sensor technology can produce vast amounts of data, complicating the design of efficient communication mechanisms when met with the harsh channel conditions typical for space scenarios.
+\Acf{jscc} is a modern approach to tackle these challenges with neuronal network models.
+In this paper, we have proposed an advanced \ac{jscc} design that takes into account a realistic channel model.
+By augmenting an encoder-decoder neuronal network model architecture with attention modules, a single model can be parametrized for different channel conditions, significantly reducing complexity when compared to separate models per per channel condition.
+Our evaluation results show that the attention-module-enhanced model performs similar to individual networks.
+In particular, our approach even outperforms individual models in cases where there is a mismatch between the detected and actual channel conditions.
+
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 
