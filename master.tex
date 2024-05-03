@@ -549,7 +549,7 @@ The \ac{pdf} of the amplitude variations is as follows:
   &\hphantom{=\int_{0}^{\infty}} \cdot I_0\Big(\frac{rz}{b_0}\Big)\ ds,
 \end{align}
 %
-where $p$ is the \ac{pdf} of the amplitude variations, $s$ is the direct signal, and $I_0(\cdot)$ is the modified Bessel function of order zero that models electromagnetic wave propagation.
+where $s$ is the direct signal, and $I_0(\cdot)$ is the modified Bessel function of order zero that models electromagnetic wave propagation.
 Further, $\mu, b_0,$ and $d_0$ are variables that can be derived from $\alpha$, $\psi$ and \MP as follows:
 %
 \begin{align}
@@ -878,8 +878,10 @@ Therefore, we observe that the use of attention module can bring additional bene
 
 Earth observation missions employing modern sensor technology can produce vast amounts of data, complicating the design of efficient communication mechanisms when met with the harsh channel conditions typical for space scenarios.
 Deep \Acf{jscc} can be applied to tackle these challenges.
+
 In this paper, we have proposed an advanced \ac{jscc} design that takes into account a realistic channel model for small satellite communication.
 Furthermore, by augmenting an encoder-decoder neuronal network model architecture with attention modules, a single model can be parametrized for different channel conditions, significantly reducing complexity when compared to separate models per per channel condition.
+
 Our evaluation results show that the attention-module-enhanced model performs similar to individual networks.
 In particular, our approach even outperforms individual models in cases where there is a mismatch between the detected and actual channel conditions.
 
