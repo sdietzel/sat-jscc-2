@@ -528,7 +528,7 @@ In each state, the channel is modeled using a Loo distribution~\cite{1623307}.
 The overall received signal is described as a sum of the log-normally distributed direct component and the Rayleigh-distributed multipath component with parameters $\alpha$, $\psi$, and \MP.
 The log-normal distribution is characterized by its mean $\alpha$ and standard deviation $\psi$, and the Rayleigh distribution by its average power \MP.
 The specific values for $\alpha$, $\psi$, and \MP are chosen depending on the channel state and the satellite's elevation angle.
-To train our joint encoder-decoder model, these values can be obtained from statistical experiments \textbf{TODO CITE}.
+To train our joint encoder-decoder model, these values can be obtained from statistical experiments \cite{channel-params}.
 
 The \ac{pdf} of the amplitude variations is as follows:
 \begin{align}
@@ -573,7 +573,7 @@ To compute the direct signal vector, we generate a series of normally distribute
 
 Next, we consider the Gaussian noise $n$. We follow the approach presented in~\cite{satjscc}. 
 We first compute the typical \ac{snr} values. 
-To this end, we determine the distance $d$ between the satellite and the ground station based on the current elevation angle $\epsilon_0$ and Earth radius $R_E = 6378\,\textrm{km}$ as described in \cite{}:
+To this end, we determine the distance $d$ between the satellite and the ground station based on the current elevation angle $\epsilon_0$ and Earth radius $R_E = 6378\,\textrm{km}$ as described in \cite{7506756}:
 %
 \begin{equation}
   d = R_E\Biggl(\sqrt{\Bigl(\frac{h + R_E}{R_E}\Bigr)^2 - \cos^{2}\epsilon_{0}} - \sin\epsilon_{0}\Biggr),
@@ -595,7 +595,7 @@ We compute the noise temperature as the sum of the antenna temperature $T_a = 29
 %
 $T_0 = 290$\,K is the reference temperature and $F_{\textrm{sys}} = 2$\,dB denotes the receiver's noise figure.
 
-Next, we compute the path loss $L$ using the Friis formula \cite{} and determine the SNR depending on $L$ and $N$ as follows:
+Next, we compute the path loss $L$ using the Friis formula and determine the SNR depending on $L$ and $N$ as follows:
 %
 \begin{equation}
   \mathrm{SNR} = P_t + G_t + G_r - L - N,
