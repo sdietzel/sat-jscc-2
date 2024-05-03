@@ -218,31 +218,31 @@ Another limitation concerns the adaptability of this approach to changing channe
 In this scenario, considering more complex channel models would easily lead to a combinatorial explosion of parameters, and consequently a prohibitive amount of separate neuronal networks.
 Therefore, separate networks obviously restrict the total number of channel parameter combinations that can reasonably be covered.
 
-In this paper, we propose a novel joint coding approach for satellite applications that allows to use a single neuronal network for a wide range of channel conditions typical for small satellite applications.
-We use a neuronal network model architecture that is enriched by so-called attention modules to reduce the combinatorial complexity.
-Using this architecture, we can train a single neuronal network based on a number of different channel conditions.
-During operation, the attention modules allow to essentially parametrize the network for different actual channel conditions.
-This parametrization allows us to consider a wide range of realistic channel conditions for small satellite applications.
-To model the channel, we use Fontán et al.'s channel model \cite{fontan2001}, which is applicable to non-geostationary small satellites and models a number of channel characteristics, such as multi-path propagation and shadowing.
-More specifically, we consider three scenarios -- \ac{los}, shadowing, and deep shadowing -- to capture different extents of multi-path propagation and shadowing effects.
-In addition, we also consider different levels of \ac{snr} to model satellite elevation angles and other parameters.
-During training of the encoder-decoder neuronal network, these parameters are used as input, in addition to a large number of example satellite images.
-Whereas a traditional encoder-decoder network would then -- simply speaking -- learn a coding scheme for the \enquote{average} of all parameters, the attention modules allow to embed schemes for all parameters within a single network that can be dynamically parameterized with the actual channel conditions during use.
-Therefore, a single network suffices when using attention modules, and separate networks with a simpler architecture are required in order to precisely represent different channel conditions.
+In this paper, we propose a neuronal-network-based \ac{jscc} approach that uses a realistic satellite channel model to capture a wide range of channel conditions.
+To manage the resulting complexity, we consider attention modules, which allow to parametrize a single model for different channel conditions rather than training separate models.
+To characterize the channel, we use Fontán et al.'s channel model \cite{fontan2001} based on Markov chains.
+It is applicable to non-geostationary small satellites and models a number of channel characteristics, such as multipath propagation and shadowing.
+More specifically, the model distinguishes multiple environments -- such as, urban, tree shadow, or open and three channel states -- \ac{los}, shadowing, and deep shadowing.
+In addition, we also derive expected \ac{snr} values based on satellite elevation angles, distance, and other parameters.
+
+Evidently, training separate networks for all possible environments, channel states, elevation angles, and so forth, would lead to a prohibitive large number of individual neuronal networks.
+Therefore, we use a model architecture that is enriched with so-called attention modules, which are compact layers that can be added in between the neuronal network's other layers to learn and focus on particular input parameters.
+Essentially, these modules allow to parametrize the network for different actual channel conditions.
 Although the resulting network with attention modules is larger than one trained for a specific set of channel conditions, it is considerably smaller than considering a set of separate networks, one for each channel condition.
 
-Our evaluation using a set of hyper-spectral images from the \sentinelii mission shows that our approach performs as good as separate, individual networks for different channel conditions while requiring significantly lower storage overhead.
+Our evaluation shows that our approach performs similar to separate, individual networks for different channel conditions while requiring significantly lower storage overhead.
 
 Thus, our main contributions can be summarized as follows:
 %
 \begin{enumerate}
-  \item We combine \ac{jscc} approaches with a realistic channel model for small satellite applications.
+  \item We enhance \ac{jscc} with a realistic channel model for small satellite applications.
   \item We apply an attention-module-augmented neuronal network architecture to be able to use a single network for a wide range of realistic channel characteristics.
   \item We evaluate our approach using a set of realistic \sentinelii Earth observation data.
+  \item We evaluate the behavior of our approach in the case of channel mismatch, i.e., when the actual channel conditions differ from the assumptions made by the sender and receiver.
 \end{enumerate}
 
 The remainder of this paper is organized as follows.
-In \Cref{sec:related_work}, we review existing work on \ac{jscc}, source coding, channel models, and attention modules.
+In \Cref{sec:related_work}, we review existing work on \ac{jscc} and channel models.
 Next, we provide an overview of our system model in \Cref{sec:system_model} before explaining our mechanism in detail in \Cref{sec:our_approach}.
 \Cref{sec:evaluation} details our evaluation results using \sentinelii mission data.
 We conclude the paper in \Cref{sec:conclusion}.
@@ -270,7 +270,7 @@ In contrast to our approach, these works limit their consideration to simple cha
 % Since we consider small satellite communication, channel models for small satellites are also relevant for our research. 
 Although different communication technologies, such as VLC~\cite{nakajima2012} and laser~\cite{welle2018}, have been considered for small satellites, RF-based approaches remain predominant.
 Therefore, we briefly review channel models for satellite-to-ground RF-based communication.   
-Loo's model~\cite{1623307} combines log-normal and Rayleigh distributions to model the \ac{los} and multi-path components, respectively.
+Loo's model~\cite{1623307} combines log-normal and Rayleigh distributions to model the \ac{los} and multipath components, respectively.
 Corazza-Vatalaro's model~\cite{Corazza1994ASM}, in contrast, uses the product of Rician and log-normal distributions to describe the multipath component. 
 Various extensions for Loo's and Corazza-Vatalaro's models have been proposed~\cite{596315, 661055}.
 All these models are static in the sense that they use a single distribution to describe all propagation conditions.
@@ -472,7 +472,7 @@ Finally, \ac{prelu} is used as activation function.
 The result is a vector $\tilde{z}$ comprising $k$ complex numbers, which represent the channel symbols.
 
 To learn and predict the actual channel conditions, the middle component of the encoder-decoder architecture ia a non-trainable channel layer, which models a realistic representation of the channel conditions in satellite communication.
-For the channel, we assume a log-normal distribution with mean $\alpha$ and standard deviation $\psi$, a Rayleigh-distributed multi-path component \MP, and a signal-to-noise parameter \SNR.
+For the channel, we assume a log-normal distribution with mean $\alpha$ and standard deviation $\psi$, a Rayleigh-distributed multipath component \MP, and a signal-to-noise parameter \SNR.
 We present the channel model in more detail in \Cref{sub:channel_model}.
 
 The block on the right serves as neural network decoder, which translates the -- potentially corrupted channel symbols $\hat{z}$ back to an approximation $\hat{x}$ of the original data.
