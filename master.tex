@@ -53,7 +53,7 @@
 \newcommand\MP{\ensuremath{\mathrm{MP}}\xspace}
 \newcommand\SNR{\ensuremath{\mathrm{SNR}}\xspace}
 
-\newcommand\ours{\textsc{AttJscc}\xspace}
+\newcommand\ours{\textsc{AdaJscc}\xspace}
 \newcommand\baseline{Baseline\xspace}
 
 \DeclareAcronym{tiff}{
@@ -146,7 +146,7 @@
 
 \begin{document}
 
-\title{Attention-based Deep Joint Source-and-Channel Coding for Small Satellite Applications}
+\title{Adaptable Deep Joint Source-and-Channel Coding for Small Satellite Applications}
 
 \author{\emph{Anonymous authors}}
 % \author{\IEEEauthorblockN{Olga Kondrateva}
@@ -177,7 +177,7 @@ it remains an open question whether it is suitable for the more complicated and 
 In this paper, we consider a detailed satellite channel model accounting for different shadowing conditions and train an encoder-decoder architecture with realistic \sentinelii satellite imagery.
 In addition, to reduce the overhead associated with applying multiple neural networks for various channel states, 
 we leverage attention modules and train a single adaptable neural network that covers a wide range of different channel conditions.
-Our evaluation results show that the proposed approach achieves similar performance when compared to less space efficient schemes that utilize separate neuronal networks for differing channel conditions.   
+Our evaluation results show that the proposed approach achieves similar performance when compared to less space-efficient schemes that utilize separate neuronal networks for differing channel conditions.   
 \end{abstract}
 
 % \begin{IEEEkeywords}
@@ -237,7 +237,7 @@ Thus, our main contributions can be summarized as follows:
 \begin{enumerate}
   \item We enhance \ac{jscc} with a realistic channel model for small satellite applications.
   \item We apply an attention-module-augmented neuronal network architecture to be able to use a single network for a wide range of realistic channel characteristics.
-  \item We evaluate our approach using a set of realistic \sentinelii Earth observation data for different channel characteristics and compression rates.
+  \item We evaluate our approach using a set of realistic \sentinelii Earth observation data for different channel characteristics and compression ratios.
   \item We evaluate the behavior of our approach in the case of channel mismatch, i.e., when the actual channel conditions differ from the assumptions made by the sender and receiver.
 \end{enumerate}
 
@@ -371,7 +371,7 @@ Similarly, Nvidia's TX2 SoC, which is compatible with the CubeSat standard's pow
 Finally, even relatively large standard machine learning models, such as VGG19 \cite{DBLP:journals/corr/SimonyanZ14a} and ResNet50 \cite{7780459}, have been evaluated on the International Space Station (ISS), operating on the Qualcomm Snapdragon 855 and Intel Movidius Myriad X processors \cite{9884906}.
 
 
-\section{Our Approach}
+\section{Adaptable \ac{jscc}}
 \label{sec:our_approach}
 
 The goal of our approach is to transmit sensor data $x \in \mathbb{R}$ acquired by small satellites in \ac{leo} to a ground station over a bandwidth-constrained channel.
@@ -472,7 +472,7 @@ The result is a vector $\tilde{z}$ comprising $k$ complex numbers.
 The vector is normalized to enforce an average transmit power constraint $P$:
 %
 \begin{equation}
-  z = \sqrt{kP}\frac{\tilde{z}}{\sqrt{\tilde{z}^{*} \tilde{z}}},
+  z = \sqrt{kP}\frac{\tilde{z}}{\sqrt{\tilde{z}^{*} \tilde{z}}}
 \end{equation}
 
 The middle component of the architecture is a non-trainable channel layer, which models a realistic representation of the channel conditions in satellite communication.
@@ -796,8 +796,8 @@ The results for compression ratios of $k/n = 0.04$ and $k/n = 0.33$ are presente
 Again, the results depend both on the environment and the shadowing state.
 While in \ac{los} conditions (\Cref{subfig:base4080_los_04,subfig:base4080_los_33}), the differences between 40\textdegree{} and 80\textdegree{} elevation angle remain negligible across different environments, 
 stronger performance variations can be seen for the more challenging states shadow (\Cref{subfig:base4080_shadow_04,subfig:base4080_shadow_33}) and deep shadow (\Cref{subfig:base4080_deep_shadow_04,subfig:base4080_deep_shadow_33}).
-In addition, we observe that the chosen compression rate influences the results depending on the elevation angle.
-More specifically, the results suggest that moderate compression rates should be chosen in case of low elevation angles.
+In addition, we observe that the chosen compression ratio influences the results depending on the elevation angle.
+More specifically, the results suggest that moderate compression ratios should be chosen in case of low elevation angles.
 
 
 \begin{figure*}
