@@ -468,7 +468,7 @@ Finally, the previous residual layer's output is multiplied with the predicted s
 As the last layer of the encoder component, we use a convolutional layer that contains $c$ filters.
 The value for $c$ is chosen based on the desired compression ratio $k/n$.
 Finally, \ac{prelu} is used as activation function.
-The result is a vector $\tilde{z}$ comprising $k$ complex numbers, which represent the channel symbols.
+The result is a vector $\tilde{z}$ comprising $k$ complex numbers, which represent the channel symbols \textbf{TODO: Formula 1 from LCN23}.
 
 The middle component of the encoder-decoder architecture is a non-trainable channel layer, which models a realistic representation of the channel conditions in satellite communication.
 For the channel, we use Fontán et al.'s statistical channel model~\cite{966585}, which assumes a log-normal distribution with mean $\alpha$ and standard deviation $\psi$ for the direct signal component and a Rayleigh-distributed multipath component with average power \MP. We also model Gaussian noise based on \SNR.
