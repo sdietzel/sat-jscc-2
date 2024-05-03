@@ -490,7 +490,7 @@ The \ac{psnr} captures to what extent original signal value is affected by disto
 \subsection{Channel model for \ac{leo} satellites}
 \label{sub:channel_model}
 
-The channel model serves as non-trainable layer in between the encoder and decoder components of the neural network model used for joint coding.
+The channel model serves as non-trainable layer in between the encoder and decoder components of the neural network model.
 We compute the channel output symbols $\hat{z}$ as follows:
 \begin{equation}
   \hat{z} = zh + n,
@@ -510,9 +510,9 @@ p_{\mathrm{overall}}(r) = x_{\mathrm{LOS}} \cdot p_{\mathrm{LOS}}(r)
   + x_{\mathrm{shadow}} \cdot p_{\mathrm{shadow}}(r),
 \end{equation}
 %
-where $x_{\mathrm{LOS}}$ is the probability that the channel is in \ac{los} shadowing conditions, $p_{\mathrm{LOS}}$ is the \ac{pdf} of the amplitude variations $r$ under \ac{los} conditions, $x_{\mathrm{shadow}}$ is the probability that the channel is in shadow conditions, and $p_{\mathrm{shadow}}$ is the \ac{pdf} of the signal variations under shadow conditions.
+where $x_{\mathrm{LOS}}$ is the probability that the channel is in \ac{los} shadowing conditions, $p_{\mathrm{LOS}}$ is the \ac{pdf} of the amplitude variations $r$ under \ac{los} conditions, $x_{\mathrm{shadow}}$ is the probability that the channel being in shadow conditions, and $p_{\mathrm{shadow}}$ is the \ac{pdf} of the signal variations under shadow conditions.
 
-The model's accuracy is further improved by using Markov chain models to capture more channel states and also state durations.
+To capture state durations, Markov chain models are typically introduced.
 That is, the propagation channel at a given time is described by the Markov chain's state probability matrix and the state transition probability matrix.
 The former contains the probabilities of being in a particular state, and the latter contains the probability of changing from one state to another.
 
@@ -524,7 +524,7 @@ Specifically, Fontán et al.'s channel model \cite{966585} uses a three-state Ma
   \item deep shadow (heavy shadowing conditions)
 \end{itemize}
 %
-In each state, the channel is modeled using a Loo distribution~\cite{1623307}. 
+In each state, the channel is modeled using the Loo distribution~\cite{1623307}. 
 The overall received signal is described as a sum of the log-normally distributed direct component and the Rayleigh-distributed multipath component with parameters $\alpha$, $\psi$, and \MP.
 The log-normal distribution is characterized by its mean $\alpha$ and standard deviation $\psi$, and the Rayleigh distribution by its average power \MP.
 The specific values for $\alpha$, $\psi$, and \MP are chosen depending on the channel state and the satellite's elevation angle.
@@ -546,10 +546,10 @@ Further, $\mu, b_0,$ and $d_0$ are variables that can be derived from $\alpha$, 
    \MP &= 10\log_{10}(2b_0)
 \end{align}
 
-We use a circuit implementation as described in \cite{DBLP:journals/ijscn/Perez-FontanMMPMMR08} to obtain $h$ based on the described statistical models.
+We simulate the Loo distribution as described in \cite{DBLP:journals/ijscn/Perez-FontanMMPMMR08} to obtain $h$ based on the input values $\alpha$, $psi$, and $MP$.
 That is, to compute the multipath vector, we generate two series of normally distributed variables and multiply them with \MP.
 To compute the direct signal vector, we generate a series of normally distributed variables with mean $\alpha$ and standard deviation $\psi$, which we then convert to linear units and combine it with the multipath component using complex addition.
-
+Note that, in contrast to \cite{DBLP:journals/ijscn/Perez-FontanMMPMMR08}, we do not model Doppler spread since we assume that the receiver is stationary and we do not model Doppler shift since the variations caused by Doppler shift are typically slow and can be corrected at the receiver~\cite{DBLP:journals/ijscn/Perez-FontanMMPMMR08}. 
 % We simulate the Fontan's model as described in \cite{DBLP:journals/ijscn/Perez-FontanMMPMMR08} to obtain $h$.
 
 % \begin{equation}
