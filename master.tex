@@ -377,7 +377,7 @@ Finally, even relatively large standard machine learning models, such as VGG19 \
 The goal of our approach is to transmit sensor data $x \in \mathbb{R}$ acquired by small satellites in \ac{leo} to a ground station over a bandwidth-constrained channel.
 The sensor data comprises optical images from multiple spectrums as defined in \Cref{sec:system_model}.
 Assuming lossy compression and transmission, the ground station reconstructs an approximation $\hat{x}$ of the original data $x$ with the goal that $\hat{x}$ is as close to $x$ as possible.
-Next, we given an overview of the protocol architecture before we explain the neural network architecture using attention modules and the channel model in more detail.
+Next, we give an overview of the protocol before we explain the neural network architecture using attention modules and the channel model in more detail.
 
 \subsection{Architecture overview}
 
@@ -388,22 +388,21 @@ Next, we given an overview of the protocol architecture before we explain the ne
   \label{fig:overview}
 \end{figure}
 
-To introduce our protocol's main components, we first explain the basic \ac{jscc} communication architecture and contrast it to the traditional case that uses separate encoders and decoders.
-\Cref{fig:overview} shows an overview of the architecture in contrast to traditional approaches.
+To introduce our protocol's main components, we first explain the basic \ac{jscc} communication architecture and contrast it to the traditional case that uses separate encoders and decoders (\Cref{fig:overview}).
 With separate coding (shown in the bottom half), the sensor data $x \in \mathbb{R}^n$ is first encoded using a source encoder, such as \jpegtwok.
-Afterwards, a channel encoder (e.g., \ac{ldpc}) adds redundancy to the compressed signal in order to protect it against packet loss due to interference.
+Afterwards, a channel encoder (e.g., \ac{ldpc}) adds redundancy to the compressed signal in order to protect it against possible transmission errors.
 The modulator component then translates the channel encoder's output to physical layer samples $z \in \mathbb{C}^k$, which can be transmitted over a noisy channel.
 The ground station receives the distorted signal $\hat{z}$ and uses corresponding components in inverse order to decode an approximation of $x$.
 The demodulator $D_m$ translates the samples back to bits, which serve as input to the channel decoder $D_c$.
 The channel decoder reconstructs the compressed image data, correcting transmission errors as far as possible.
 The source decoder $D_s$ finally approximately reconstructs the original optical sensor data as $\hat{x}$.
 
-In our \ac{jscc} approach (upper half of \Cref{fig:overview}), in contrast, parts of a single neuronal network are used as encoder $N_e$ and decoder $N_d$ by the satellite and ground station, respectively.
+In the case of deep \ac{jscc} approach (upper half of \Cref{fig:overview}), in contrast, parts of a single neuronal network are used as encoder $N_e$ and decoder $N_d$ by the satellite and ground station, respectively.
 These components jointly perform the source coding, channel coding, modulation, and their corresponding inverse operations.
 
 We use an encoder-decoder neuronal network architecture based on \cite{satjscc} to implement $N_e$ and $N_d$:
 During training, the encoder ($N_e$) and decoder ($N_d$) parts of the network are linked together using a realistic channel model for noisy satellite links.
-To better reflect realistic channel conditions, we replace the \ac{awgn} channel used in \cite{satjscc} with a more realistic channel model for \ac{leo} satellites.
+To better reflect the channel conditions, we replace the \ac{awgn} channel used in \cite{satjscc} with a more realistic Fontán et al.'s statistical channel model~\cite{966585}.
 The encoder-decoder model is then trained using an image dataset derived from the body of \sentinelii mission data.
 The images within the dataset are used as model input and the reconstructed image's quality is used as reward metric.
 Normally, a separate model would need to be trained for each characteristic set of channel conditions \cite{satjscc}.
@@ -461,24 +460,24 @@ These modules allow to alter the feature weights of their preceding residual blo
 To do so, a number of channel parameters are added as additional input to the attention modules.
 Based on these parameters, a number of scaling parameters are learned that either increase or decrease the connection strength to the next module, depending on the specific channel condition.
 The attention modules operate in three steps.
-First, global average pooling is applied to the previous residual block's output, which serves to make available global context information.
+First, global average pooling is applied to the previous residual block's output to make available the global context information.
 The pooled output is then concatenated with variables representing channel parameters.
 Second, a simple neural network structure -- two fully connected layers plus \ac{relu} and sigmoid as activation functions -- is used to predict the proper scaling factors based on the channel condition parameters.
 Finally, the previous residual layer's output is multiplied with the predicted scaling factors to implement the attention-based scaling.
 
-As last layer of the encoder component, we use a convolutional layer that contains $c$ filters.
+As the last layer of the encoder component, we use a convolutional layer that contains $c$ filters.
 The value for $c$ is chosen based on the desired compression ratio $k/n$.
 Finally, \ac{prelu} is used as activation function.
 The result is a vector $\tilde{z}$ comprising $k$ complex numbers, which represent the channel symbols.
 
-To learn and predict the actual channel conditions, the middle component of the encoder-decoder architecture ia a non-trainable channel layer, which models a realistic representation of the channel conditions in satellite communication.
-For the channel, we assume a log-normal distribution with mean $\alpha$ and standard deviation $\psi$, a Rayleigh-distributed multipath component \MP, and a signal-to-noise parameter \SNR.
+The middle component of the encoder-decoder architecture is a non-trainable channel layer, which models a realistic representation of the channel conditions in satellite communication.
+For the channel, we use Fontán et al.'s statistical channel model~\cite{966585}, which assumes a log-normal distribution with mean $\alpha$ and standard deviation $\psi$ for the direct signal component and a Rayleigh-distributed multipath component with average power \MP. We also model Gaussian noise based on \SNR.
 We present the channel model in more detail in \Cref{sub:channel_model}.
 
-The block on the right serves as neural network decoder, which translates the -- potentially corrupted channel symbols $\hat{z}$ back to an approximation $\hat{x}$ of the original data.
+The block on the right serves as neural network decoder, which translates the -- potentially corrupted -- channel symbols $\hat{z}$ back to an approximation $\hat{x}$ of the original data.
 The decoder follows the same architecture design as the encoder: a convolutional transpose layer is followed by four residual transpose blocks plus corresponding attention modules,  another convolutional transpose layer, and a \ac{prelu} activation function.
 
-As reward function during model training and to evaluate the quality of the reconstructed image signal, we use the \ac{psnr} metric:
+As loss function during model training, we use MSE \textbf{TODO: MSE als Loss Funktion und im Text nach "reward" suchen und korrigieren} and to evaluate the quality of the reconstructed image signal, we use the \ac{psnr} metric:
 %
 \begin{equation}
   \mathrm{PSNR} = 10 \log_{10}\frac{\mathrm{MAX}^2}{\mathrm{MSE}},
