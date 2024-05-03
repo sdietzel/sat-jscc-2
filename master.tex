@@ -264,7 +264,7 @@ Yu et al. use optimization techniques to jointly optimize source and channel cod
 Xu et al. consider distributed \ac{jscc} for video transmission~\cite{4205066}. 
 
 Recently, deep-learning-based methods have been successfully applied for source coding as well as for channel coding. In particular, various studies show that deep source coding is able to outperform traditional source coding techniques, such as JPEG and JPEG2000~\cite{toderici2016variable, ballé2017endtoend, Hu2022}.
-Similarly, O'Shea et al. have demonstrated that performance close to Hamming codes can be achieved using an encoder-decoder architecture~\cite{8054694}. 
+Similarly, in the domain of channel coding, O'Shea et al. have demonstrated that performance close to Hamming codes can be achieved using an encoder-decoder architecture~\cite{8054694}. 
 Based on these results, the use of deep learning has been extended to \ac{jscc}.
 One of the first encoder-decoder architectures combining source coding, channel coding and modulation has been proposed by Bourtsoulatze et al.~\cite{Bourtsoulatze2019} and was later improved by a number of works \cite{Xuan2021,Kurka2021,yang2021_2}.
 % Later works addressed the limitations of this approach by considering such topics as correlated sources~\cite{Xuan2021}, progressive image transmission~\cite{Kurka2021} and adaptive rate control~\cite{yang2021_2}.
@@ -276,7 +276,7 @@ In contrast to our approach, these works limit their consideration to simple cha
 Although different communication technologies, such as VLC~\cite{nakajima2012} and laser~\cite{welle2018}, have been considered for small satellites, RF-based approaches remain predominant.
 Therefore, we briefly review channel models for satellite-to-ground RF-based communication.   
 Loo's model~\cite{1623307} combines log-normal and Rayleigh distributions to model the \ac{los} and multi-path components, respectively.
-Corazza-Vatalaro's model~\cite{Corazza1994ASM}, in contrast, uses the product of Rician and log-normal distributions to describe the multi-path component. 
+Corazza-Vatalaro's model~\cite{Corazza1994ASM}, in contrast, uses the product of Rician and log-normal distributions to describe the multipath component. 
 Various extensions for Loo's and Corazza-Vatalaro's models have been proposed~\cite{596315, 661055}.
 All these models are static in the sense that they use a single distribution to describe all propagation conditions.
 To model signal changes over time, dynamic models \cite{966585,4151152,7779114,8693582}, which are mostly based on Markov chains, can be used \cite{9079470}.
