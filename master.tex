@@ -237,7 +237,7 @@ Thus, our main contributions can be summarized as follows:
 \begin{enumerate}
   \item We enhance \ac{jscc} with a realistic channel model for small satellite applications.
   \item We apply an attention-module-augmented neuronal network architecture to be able to use a single network for a wide range of realistic channel characteristics.
-  \item We evaluate our approach using a set of realistic \sentinelii Earth observation data.
+  \item We evaluate our approach using a set of realistic \sentinelii Earth observation data for different channel characteristics and compression rates.
   \item We evaluate the behavior of our approach in the case of channel mismatch, i.e., when the actual channel conditions differ from the assumptions made by the sender and receiver.
 \end{enumerate}
 
@@ -404,7 +404,7 @@ We use an encoder-decoder neuronal network architecture based on \cite{satjscc} 
 During training, the encoder ($N_e$) and decoder ($N_d$) parts of the network are linked together using a realistic channel model for noisy satellite links.
 To better reflect the channel conditions, we replace the \ac{awgn} channel used in \cite{satjscc} with a more realistic Fontán et al.'s statistical channel model~\cite{966585}.
 The encoder-decoder model is then trained using an image dataset derived from the body of \sentinelii mission data.
-The images within the dataset are used as model input and the reconstructed image's quality is used as reward metric.
+% The images within the dataset are used as model input and the reconstructed image's quality is used as reward metric.
 Normally, a separate model would need to be trained for each characteristic set of channel conditions \cite{satjscc}.
 In order to use a single network for a wide array of channel conditions, we augment the model with so-called attention modules \cite{wireless-attention-modules} as part of both the encoder and decoder during training.
 These essentially allow to parameterize the network during later operation to cater to changing channel conditions.
@@ -477,7 +477,14 @@ We present the channel model in more detail in \Cref{sub:channel_model}.
 The block on the right serves as neural network decoder, which translates the -- potentially corrupted -- channel symbols $\hat{z}$ back to an approximation $\hat{x}$ of the original data.
 The decoder follows the same architecture design as the encoder: a convolutional transpose layer is followed by four residual transpose blocks plus corresponding attention modules,  another convolutional transpose layer, and a \ac{prelu} activation function.
 
-As loss function during model training, we use MSE \textbf{TODO: MSE als Loss Funktion und im Text nach "reward" suchen und korrigieren} and to evaluate the quality of the reconstructed image signal, we use the \ac{psnr} metric:
+During training, we use the average \ac{mse} as loss function:
+%
+\begin{equation}
+  \mathcal{L} = \mathrm{MSE} = \frac{1}{N} \sum_{i=1}^{N} d \bigl(x_i, \hat{x}_i\bigr),
+\end{equation}
+where $N$ is the number of samples and $d(x, \hat{x}) = || x - \hat{x} ||^2$ is the \ac{mse} distortion.
+
+To evaluate the quality of the reconstructed image signal, we use the \ac{psnr} metric:
 %
 \begin{equation}
   \mathrm{PSNR} = 10 \log_{10}\frac{\mathrm{MAX}^2}{\mathrm{MSE}},
@@ -658,6 +665,7 @@ These measurements were conducted for a range of elevation angles from 40\textde
 We further calculate the expected \ac{snr} as described in \Cref{sub:channel_model}.
 As environments, we consider \emph{open, suburban, intermediate tree shadow, heavy tree shadow,} and \emph{urban.}
 The channel states are differentiated with respect to their shadowing conditions as \emph{\acf{los}, shadow,} and \emph{deep shadow.}
+In addition, we consider a number of compression ratios $k/n$ ranging from $0.04$ to $0.33$, as the amount of tolerable compression differs depending on the use case.
 
 We consider three evaluation scenarios:
 %
