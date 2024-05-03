@@ -196,9 +196,9 @@ Second, sensor technology has improved greatly.
 Besides higher spatial resolution, modern sensors support a wider spectrum range, exceeding that of visible light.
 Hyperspectral images include infrared and other bands, which allow to monitor vegetation, clouds, and other phenomena. % not represented in the visible light spectrum.
 
-These advances in satellite and sensor technology, however, are not met by an equal improvement in communication capacity.
+These advances in satellite and sensor technology, however, are not met by equal improvements in communication capacity.
 CubeSats and other small satellites have a constrained energy budget. %, and -- unlike their larger counterparts -- they are not geo-stationary.
-In addition, unlike geostationary satellites, they orbit the Earth several times per day with high speed, limiting communication with ground stations to several short communication windows.
+And, unlike geostationary satellites, they orbit the Earth several times per day with high speed, limiting the communication windows with ground stations.
 Their high velocity and harsh channel conditions due to weather and low elevation angles further lead to high packet loss rates and complicate communication \cite{nogales2018}.
 
 Therefore, efficient and robust communication systems are necessary to support demanding Earth observation applications.
@@ -219,10 +219,10 @@ In this scenario, considering more complex channel models would easily lead to a
 Therefore, separate networks obviously restrict the total number of channel parameter combinations that can reasonably be covered.
 
 In this paper, we propose a neuronal-network-based \ac{jscc} approach that uses a realistic satellite channel model to capture a wide range of channel conditions.
-To manage the resulting complexity, we consider attention modules, which allow to parametrize a single model for different channel conditions rather than training separate models.
-To characterize the channel, we use Fontán et al.'s channel model \cite{fontan2001} based on Markov chains.
+To manage the resulting complexity, we employ attention modules, which allow to parametrize models for different channel conditions rather than training separate models.
+To characterize the channel, we use Fontán et al.'s model \cite{fontan2001} based on Markov chains.
 It is applicable to non-geostationary small satellites and models a number of channel characteristics, such as multipath propagation and shadowing.
-More specifically, the model distinguishes multiple environments -- such as, urban, tree shadow, or open and three channel states -- \ac{los}, shadowing, and deep shadowing.
+The model distinguishes multiple environments -- such as, urban, tree shadow, or open -- and three channel states -- \ac{los}, shadowing, and deep shadowing.
 In addition, we also derive expected \ac{snr} values based on satellite elevation angles, distance, and other parameters.
 
 Evidently, training separate networks for all possible environments, channel states, elevation angles, and so forth, would lead to a prohibitive large number of individual neuronal networks.
@@ -338,7 +338,7 @@ As an example use case for the methods we propose in this paper, we briefly intr
 We also use a subset of the mission's dataset for our evaluation.
 Moreover, we give an overview of how neuronal networks are used onboard satellites for image processing.
 
-\sentinelii \cite{sentinel2} is a set of missions operated by the \ac{esa} as part of the Copernicus program using \ac{leo} satellites.
+\sentinelii \cite{sentinel2} is operated by the \ac{esa} as part of the Copernicus program using \ac{leo} satellites.
 The first satellites were launched in 2015, with more launches following in 2017 and 2024.
 The missions comprise two satellites, which orbit the Earth such that each spot on the surface is revisited approximately every five days.
 With their sensors, they cover a strip of land that is 290 km wide with each pass.
@@ -475,12 +475,12 @@ The vector is normalized to enforce an average transmit power constraint $P$:
   z = \sqrt{kP}\frac{\tilde{z}}{\sqrt{\tilde{z}^{*} \tilde{z}}},
 \end{equation}
 
-The middle component of the encoder-decoder architecture is a non-trainable channel layer, which models a realistic representation of the channel conditions in satellite communication.
+The middle component of the architecture is a non-trainable channel layer, which models a realistic representation of the channel conditions in satellite communication.
 For the channel, we use Fontán et al.'s statistical channel model~\cite{966585}, which assumes a log-normal distribution with mean $\alpha$ and standard deviation $\psi$ for the direct signal component and a Rayleigh-distributed multipath component with average power \MP. We also model Gaussian noise based on \SNR.
 We present the channel model in more detail in \Cref{sub:channel_model}.
 
-The block on the right serves as neural network decoder, which translates the -- potentially corrupted -- channel symbols $\hat{z}$ back to an approximation $\hat{x}$ of the original data.
-The decoder follows the same architecture design as the encoder: a convolutional transpose layer is followed by four residual transpose blocks plus corresponding attention modules,  another convolutional transpose layer, and a \ac{prelu} activation function.
+The block on the right serves as neural network decoder, which translates the potentially corrupted channel symbols $\hat{z}$ back to an approximation $\hat{x}$ of the original data.
+The decoder follows the same architecture design: a convolutional transpose layer is followed by four residual transpose blocks plus corresponding attention modules,  another convolutional transpose layer, and a \ac{prelu} activation function.
 
 During training, we use the average \ac{mse} as loss function:
 %
@@ -496,7 +496,7 @@ To evaluate the quality of the reconstructed image signal, we use the \ac{psnr} 
 \end{equation}
 %
 where $\mathrm{MAX}$ is the maximum possible pixel value.
-The \ac{psnr} captures to what extent original signal value is affected by distorting noise as a fraction between the maximum signal and noise.
+The \ac{psnr} captures how much the original signal value is affected by distorting noise.
 
 
 \subsection{Channel model for \ac{leo} satellites}
@@ -507,7 +507,7 @@ We compute the channel output symbols $\hat{z}$ as follows:
 \begin{equation}
   \hat{z} = zh + n,
 \end{equation}
-where $h$ denotes channel gain, $n$ is Gaussian noise, and $z$ are the input symbols.
+where $h$ is the channel gain, $n$ is Gaussian noise, and $z$ are the input symbols.
 Next, we explain how $h$ and $n$ are calculated.
 
 To account for specific satellite channel conditions, we compute $h$ using Fontán et al.'s statistical channel model~\cite{966585}. 
@@ -526,7 +526,7 @@ where $x_{\mathrm{LOS}}$ is the probability that the channel is in \ac{los} shad
 
 To capture state durations, Markov chain models are typically introduced.
 That is, the propagation channel at a given time is described by the Markov chain's state probability matrix and the state transition probability matrix.
-The former contains the probabilities of being in a particular state, and the latter contains the probability of changing from one state to another.
+The former contains the probabilities of being in a particular state, and the latter the probability of changing from one state to another.
 
 Specifically, Fontán et al.'s channel model \cite{966585} uses a three-state Markov chain containing the following states:
 %
