@@ -717,10 +717,10 @@ The main goal of our evaluation is, therefore, to determine whether the loss in 
 \label{fig:different_scenes_40}
 \end{figure*}
 
-First, we discuss the \baseline's results for different environments, states, and compression ratios with 40\textdegree{} elevation angle shown in \Cref{fig:different_scenes_40}. 
-The $x$-axis shows different compression rates and the $y$-axis the achieved \ac{psnr} values.
+First, we discuss the \baseline's results for different environments, states, and compression ratios $k/n$ with 40\textdegree{} elevation angle shown in \Cref{fig:different_scenes_40}. 
+The $x$-axis shows different compression ratios and the $y$-axis the achieved \ac{psnr} values.
 It can be seen that the results strongly depend on the environment.
-As expected, the best \ac{psnr} values are achieved in an open environment and the worst in more challenging environments, such as urban or intermediate tree shadow.
+As expected, the best \ac{psnr} values are achieved in the open environment and the worst in more challenging environments, such as urban or intermediate tree shadow.
 It also can be seen that the results significantly depend on shadowing conditions. 
 While for deep shadow (\Cref{subfig:baseline_deep_shadow}), the performance varies considerably between different environments, 
 the differences become less pronounced as shadowing conditions improve (\Cref{subfig:baseline_shadow,subfig:baseline_los}).
@@ -857,7 +857,7 @@ The underlying assumption is that both the satellite and the ground station cons
 Therefore, it is possible that the wrong model is selected, which may lead to reduced performance.
 The results are presented in \Cref{fig:different_state_same_snr}.
 In \Cref{fig:different_state_same_snr_better}, assume the satellite and ground station both assume a deep shadow state but the actual state is \ac{los}. 
-That is, the channel the conditions are better than expected. 
+That is, the channel conditions are better than expected. 
 We compare the results for the correct channel estimation (solid lines) and wrong channel estimations (dashed lines).
 The results show that both \ours and the \baseline are not able to benefit from the better channel state and experience noticeable performance degradation.
 The results differ a lot when comparing 40\textdegree{} and 80\textdegree{} elevation angles.
@@ -873,9 +873,9 @@ Therefore, we observe that the use of attention module can bring additional bene
 \label{sec:conclusion}
 
 Earth observation missions employing modern sensor technology can produce vast amounts of data, complicating the design of efficient communication mechanisms when met with the harsh channel conditions typical for space scenarios.
-\Acf{jscc} is a modern approach to tackle these challenges with neuronal network models.
-In this paper, we have proposed an advanced \ac{jscc} design that takes into account a realistic channel model.
-By augmenting an encoder-decoder neuronal network model architecture with attention modules, a single model can be parametrized for different channel conditions, significantly reducing complexity when compared to separate models per per channel condition.
+Deep \Acf{jscc} can be applied to tackle these challenges.
+In this paper, we have proposed an advanced \ac{jscc} design that takes into account a realistic channel model for small satellite communication.
+Furthermore, by augmenting an encoder-decoder neuronal network model architecture with attention modules, a single model can be parametrized for different channel conditions, significantly reducing complexity when compared to separate models per per channel condition.
 Our evaluation results show that the attention-module-enhanced model performs similar to individual networks.
 In particular, our approach even outperforms individual models in cases where there is a mismatch between the detected and actual channel conditions.
 
