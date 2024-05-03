@@ -653,7 +653,7 @@ We use cubic interpolation to extrapolate all spectral bands to the same image r
 During training, we set the batch size to 32; the learning rate is $10^{-3}$ and adjusted to $10^{-4}$ after 500 epochs; and Adam is used as a stochastic gradient descent.
 All code was written using Keras\footnote{Website: https://keras.io/} and Tensorflow.\footnote{Website: https://www.tensorflow.org/}
 
-To represent different channel conditions, we use statistical measurements for $\alpha$, $\psi$, and \MP obtained in different environments and channel states \cite{channel_values}.
+To represent different channel conditions, we use statistical measurements for $\alpha$, $\psi$, and \MP obtained in different environments and channel states \cite{channel-params}.
 These measurements were conducted for a range of elevation angles from 40\textdegree to 80\textdegree.
 We further calculate the expected \ac{snr} as described in \Cref{sub:channel_model}.
 As environments, we consider \emph{open, suburban, intermediate tree shadow, heavy tree shadow,} and \emph{urban.}
@@ -668,10 +668,13 @@ We consider three evaluation scenarios:
 \end{enumerate}
 
 For all scenarios, we compare the achieved image quality measured using \ac{psnr} -- higher values indicate better image quality.
-Note that \ours uses an attention-module-parametrized version of the same network for a wide range of channel conditions.
-We therefore expect \ours to perform slightly worse in terms of \ac{psnr} when compared to a custom tailored model.
-The main advantage of \ours is that -- due to the parametrization -- the single model is much more storage efficient than individual model.
-Moreover, the parameters for the attention modules can cater to nuanced differences in channel conditions, whereas individually trained models would likely cover a range of similar channel conditions to avoid the combinatorial explosion of storage requirements.
+
+The \baseline model comprises \textbf{TODO TODO} parameters to implement the encoder and decoder for a single set of parameters.
+Due to the added attention modules, a single model of \ours contains \textbf{TODO TODO} parameters, which is a small increase of \textbf{TODO TODO} percent.
+However, a single \ours model captures a range of channel conditions, significantly reducing the overall storage overhead.
+Specifically, we train a single \ours model for the three channel states and different \ac{snr} values.
+Different models are still used for different environments and compression rates, as we assume these parameters to change less frequently.
+Due to the use of attention modules, we expect \ours to perform slightly worse in terms of \ac{psnr} when compared to a custom tailored model.
 The main goal of our evaluation is, therefore, to determine whether the loss in \ac{psnr} is negligible when compared to the gain in storage efficiency.
 
 
