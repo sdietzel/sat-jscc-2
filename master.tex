@@ -567,7 +567,37 @@ Finally, we compute the noise vector $n$ as follows:
 \section{Evaluation}
 \label{sec:evaluation}
 
-\begin{table}
+\begin{figure*}
+  \begin{subfigure}{.32\linewidth}
+  \centering
+  \input{plots/plt_no_af_40_los.tex}
+  \caption{LOS}
+  \label{subfig:baseline_los}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.32\linewidth}
+  \centering
+  \input{plots/plt_no_af_40_shadow.tex}
+  \caption{Shadow}
+  \label{subfig:baseline_shadow}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.32\linewidth}
+  \centering
+  \input{plots/plt_no_af_40_deep_shadow.tex}
+  \caption{Deep shadow}
+  \label{subfig:baseline_deep_shadow}
+\end{subfigure}
+
+\vspace{1em}
+\centering
+\ref{legendenv}
+
+\caption{\ac{psnr} achieved by the \baseline for different environments, states, and compression ratios with 40\textdegree{} elevation angle.}
+\label{fig:different_scenes_40}
+\end{figure*}
+
+\begin{table}[b!]
   \caption{Channel Parameters}
   \label{tab:channel_parameters}
 
@@ -602,63 +632,6 @@ We further calculate the expected \ac{snr} as described in \Cref{sub:channel_mod
 As environments, we consider \emph{open, suburban, intermediate tree shadow, heavy tree shadow,} and \emph{urban.}
 The channel states are differentiated with respect to their shadowing conditions as \emph{\acf{los}, shadow,} and \emph{deep shadow.}
 In addition, we consider a number of compression ratios $k/n$ ranging from $0.04$ to $0.33$, as the amount of tolerable compression differs depending on the use case.
-
-We consider three evaluation scenarios:
-%
-\begin{enumerate}
-  \item We evaluate how the \baseline performs in different environments, channel states, compression ratios, and elevation angles.
-  \item We compare \ours against the \baseline to evaluate the impact of attention modules on the performance.
-  \item We compare \ours against the \baseline in a scenario where the detected channel state differs from the actual channel state, and thus, the wrong network or attention module parametrization are used.
-\end{enumerate}
-
-For all scenarios, we compare the image quality measured using \ac{psnr} -- higher values indicate better image quality.
-
-While adding attention modules incurs additional overhead, it is negatable in our case. 
-The attention module parameters comprise only $0.25\%$ of all model parameters in \ours.  
-However, a single \ours model captures a range of channel conditions, significantly reducing the overall storage overhead.
-Specifically, we train a single \ours model for the three channel states and different \ac{snr} values.
-Different models are still used for different environments and compression ratios, as we assume these parameters to change less frequently.
-Due to the use of attention modules, we expect \ours to perform slightly worse in terms of \ac{psnr} when compared to a custom tailored model.
-The main goal of our evaluation is, therefore, to determine whether the loss in \ac{psnr} is negligible when compared to the gain in storage efficiency.
-
-
-\begin{figure*}
-  \begin{subfigure}{.32\linewidth}
-  \centering
-  \input{plots/plt_no_af_40_los.tex}
-  \caption{LOS}
-  \label{subfig:baseline_los}
-\end{subfigure}
-\hfill
-\begin{subfigure}{.32\linewidth}
-  \centering
-  \input{plots/plt_no_af_40_shadow.tex}
-  \caption{Shadow}
-  \label{subfig:baseline_shadow}
-\end{subfigure}
-\hfill
-\begin{subfigure}{.32\linewidth}
-  \centering
-  \input{plots/plt_no_af_40_deep_shadow.tex}
-  \caption{Deep shadow}
-  \label{subfig:baseline_deep_shadow}
-\end{subfigure}
-
-\vspace{1em}
-\centering
-\ref{legendenv}
-
-\caption{\ac{psnr} achieved by the \baseline for different environments, states, and compression ratios with 40\textdegree{} elevation angle.}
-\label{fig:different_scenes_40}
-\end{figure*}
-
-First, we discuss the \baseline's results for different environments, states, and compression ratios $k/n$ with 40\textdegree{} elevation angle shown in \Cref{fig:different_scenes_40}. 
-The $x$-axis shows different compression ratios and the $y$-axis the achieved \ac{psnr} values.
-It can be seen that the results strongly depend on the environment.
-As expected, the best \ac{psnr} values are achieved in the open environment and the worst in more challenging environments, such as urban or intermediate tree shadow.
-It also can be seen that the results significantly depend on shadowing conditions. 
-While for deep shadow (\Cref{subfig:baseline_deep_shadow}), the performance varies considerably between different environments, 
-the differences become less pronounced as shadowing conditions improve (\Cref{subfig:baseline_shadow,subfig:baseline_los}).
 
 \begin{figure*}
   \begin{subfigure}{.32\linewidth}
@@ -722,6 +695,33 @@ the differences become less pronounced as shadowing conditions improve (\Cref{su
 \label{fig:elevation_angles}
 \end{figure*}
 
+
+We consider three evaluation scenarios:
+%
+\begin{enumerate}
+  \item We evaluate how the \baseline performs in different environments, channel states, compression ratios, and elevation angles.
+  \item We compare \ours against the \baseline to evaluate the impact of attention modules on the performance.
+  \item We compare \ours against the \baseline in a scenario where the detected channel state differs from the actual channel state, and thus, the wrong network or attention module parametrization are used.
+\end{enumerate}
+
+For all scenarios, we compare the image quality measured using \ac{psnr} -- higher values indicate better image quality.
+
+While adding attention modules incurs additional overhead, it is negatable in our case. 
+The attention module parameters comprise only $0.25\%$ of all model parameters in \ours.  
+However, a single \ours model captures a range of channel conditions, significantly reducing the overall storage overhead.
+Specifically, we train a single \ours model for the three channel states and different \ac{snr} values.
+Different models are still used for different environments and compression ratios, as we assume these parameters to change less frequently.
+Due to the use of attention modules, we expect \ours to perform slightly worse in terms of \ac{psnr} when compared to a custom tailored model.
+The main goal of our evaluation is, therefore, to determine whether the loss in \ac{psnr} is negligible when compared to the gain in storage efficiency.
+
+First, we discuss the \baseline's results for different environments, states, and compression ratios $k/n$ with 40\textdegree{} elevation angle shown in \Cref{fig:different_scenes_40}. 
+The $x$-axis shows different compression ratios and the $y$-axis the achieved \ac{psnr} values.
+It can be seen that the results strongly depend on the environment.
+As expected, the best \ac{psnr} values are achieved in the open environment and the worst in more challenging environments, such as urban or intermediate tree shadow.
+It also can be seen that the results significantly depend on shadowing conditions. 
+While for deep shadow (\Cref{subfig:baseline_deep_shadow}), the performance varies considerably between different environments, 
+the differences become less pronounced as shadowing conditions improve (\Cref{subfig:baseline_shadow,subfig:baseline_los}).
+
 Next, we consider the differences between 40\textdegree{} and 80\textdegree{} elevation angles for the \baseline. 
 The results for compression ratios of $k/n = 0.04$ and $k/n = 0.33$ are presented in \Cref{fig:elevation_angles}.
 Again, the results depend both on the environment and the shadowing state.
@@ -752,18 +752,6 @@ More specifically, the results suggest that moderate compression ratios should b
 \label{fig:af_vs_no_af}
 \end{figure*}
 
-Next, we evaluate how the use of attention modules influences the performance.
-We compare the neural network architectures with attention modules (\ours) and without attention modules (\baseline).
-For our evaluation, we choose an urban environment since it shows stronger variability for different states and elevation angles.
-The results are presented in \Cref{fig:af_vs_no_af}.
-We can see that the performance of \ours depends on the compression ratio and the channel state and that the elevation angle plays a less important role. 
-When stronger compression is applied, the \ac{psnr} values are similar to that of the \baseline, which uses separate neural network models for different conditions. 
-In case of \ac{los} with a 40\textdegree{} elevation angle, \ours exhibits even slightly better performance than the \baseline.
-For less aggressive compression, \ours shows slightly inferior results.
-The biggest performance gap is observed in deep shadow conditions and the smallest in shadow conditions. 
-This gap becomes even smaller for shadow conditions when the elevation angle is set to 80\textdegree{}. 
-However, there is no significant difference between 40\textdegree{} and 80\textdegree{} elevation for the other channel states.
-
 \begin{figure*}[t!]
   \begin{subfigure}{.48\linewidth}
   \centering
@@ -786,6 +774,18 @@ However, there is no significant difference between 40\textdegree{} and 80\textd
 \caption{Channel conditions differing from the expected state in an urban environment.}
 \label{fig:different_state_same_snr}
 \end{figure*}
+
+Next, we evaluate how the use of attention modules influences the performance.
+We compare the neural network architectures with attention modules (\ours) and without attention modules (\baseline).
+For our evaluation, we choose an urban environment since it shows stronger variability for different states and elevation angles.
+The results are presented in \Cref{fig:af_vs_no_af}.
+We can see that the performance of \ours depends on the compression ratio and the channel state and that the elevation angle plays a less important role. 
+When stronger compression is applied, the \ac{psnr} values are similar to that of the \baseline, which uses separate neural network models for different conditions. 
+In case of \ac{los} with a 40\textdegree{} elevation angle, \ours exhibits even slightly better performance than the \baseline.
+For less aggressive compression, \ours shows slightly inferior results.
+The biggest performance gap is observed in deep shadow conditions and the smallest in shadow conditions. 
+This gap becomes even smaller for shadow conditions when the elevation angle is set to 80\textdegree{}. 
+However, there is no significant difference between 40\textdegree{} and 80\textdegree{} elevation for the other channel states.
 
 Finally, we evaluate what happens when there is a mismatch between the estimated channel parameters and the real channel conditions. 
 The underlying assumption is that both the satellite and the ground station constantly monitor the observed channel conditions and either select the most suitable neural network model (in case of the \baseline) or the most suitable attention module parameters (in case of \ours).
