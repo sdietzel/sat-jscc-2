@@ -148,22 +148,21 @@
 
 \title{Adaptable Deep Joint Source-and-Channel Coding for Small Satellite Applications}
 
-\author{\emph{Anonymous authors}}
-% \author{\IEEEauthorblockN{Olga Kondrateva}
-% \IEEEauthorblockA{\textit{Humboldt-Universit\"at zu Berlin}\\
-% Berlin, Germany \\
-% kondrate@informatik.hu-berlin.de}
-% \and
-% \IEEEauthorblockN{Stefan Dietzel}
-% \IEEEauthorblockA{\textit{Merantix Momentum GmbH}\\
-% Berlin, Germany \\
-% stefan@merantix-momentum.com}
-% \and
-% \IEEEauthorblockN{Bj\"orn Scheuermann}
-% \IEEEauthorblockA{\textit{Technical University of Darmstadt}\\
-% Darmstadt, Germany \\
-% scheuermann@kom.tu-darmstadt.de}
-% }
+\author{\IEEEauthorblockN{Olga Kondrateva}
+\IEEEauthorblockA{\textit{Technical University of Darmstadt}\\
+Berlin, Germany \\
+olga.kondrateva@kom.tu-darmstadt.de}
+\and
+\IEEEauthorblockN{Stefan Dietzel}
+\IEEEauthorblockA{\textit{Merantix Momentum GmbH}\\
+Berlin, Germany \\
+stefan@merantix-momentum.com}
+\and
+\IEEEauthorblockN{Bj\"orn Scheuermann}
+\IEEEauthorblockA{\textit{Technical University of Darmstadt}\\
+Darmstadt, Germany \\
+scheuermann@kom.tu-darmstadt.de}
+}
 
 \maketitle
 
@@ -171,7 +170,7 @@
 Earth observation with small satellites serves a wide range of relevant applications.
 However, significant advances in sensor technology (e.g., higher resolution, multiple spectrums beyond visible light) in combination with challenging channel characteristics lead to a communication bottleneck 
 when transmitting the collected data to Earth.
-Recently, joint source coding, channel coding, and modulation based on neuronal networks has been proposed to combine image compression and communication. %dynamically adapt to the varying communication channel and to take data properties into account.
+Recently, joint source coding, channel coding, and modulation based on neuronal networks has been proposed to combine image compression and communication.
 Though this approach achieves promising results when applied to standard terrestrial channel models, 
 it remains an open question whether it is suitable for the more complicated and quickly varying satellite communication channel. 
 In this paper, we consider a detailed satellite channel model accounting for different shadowing conditions and train an encoder-decoder architecture with realistic \sentinelii satellite imagery.
@@ -179,10 +178,6 @@ In addition, to reduce the overhead associated with applying multiple neural net
 we leverage attention modules and train a single adaptable neural network that covers a wide range of different channel conditions.
 Our evaluation results show that the proposed approach achieves similar performance when compared to less space-efficient schemes that utilize separate neuronal networks for differing channel conditions.   
 \end{abstract}
-
-% \begin{IEEEkeywords}
-%   cross-layer optimization; AI-enabled networking; small satellite applications
-%   \end{IEEEkeywords}
 
 \acresetall
 \section{Introduction}
@@ -194,10 +189,10 @@ First, technological advances have allowed to build smaller satellites, which us
 A prime example are CubeSats, which operate in \ac{leo} and consist of $10 \times 10 \times 10$\,cm units \cite{cubesat2020}.
 Second, sensor technology has improved greatly.
 Besides higher spatial resolution, modern sensors support a wider spectrum range, exceeding that of visible light.
-Hyperspectral images include infrared and other bands, which allow to monitor vegetation, clouds, and other phenomena. % not represented in the visible light spectrum.
+Hyperspectral images include infrared and other bands, which allow to monitor vegetation, clouds, and other phenomena.
 
 These advances in satellite and sensor technology, however, are not met by equal improvements in communication capacity.
-CubeSats and other small satellites have a constrained energy budget. %, and -- unlike their larger counterparts -- they are not geo-stationary.
+CubeSats and other small satellites have a constrained energy budget.
 And, unlike geostationary satellites, they orbit the Earth several times per day with high speed, limiting the communication windows with ground stations.
 Their high velocity and harsh channel conditions due to weather and low elevation angles further lead to high packet loss rates and complicate communication \cite{nogales2018}.
 
@@ -206,7 +201,6 @@ Typically, source coding, channel coding, and modulation schemes are applied to 
 Source coding serves to compress sensor images, often in a lossy fashion (e.g., \jpegtwok) \cite{sentinel-2-user-handbook}.
 Channel coding (e.g., \ac{ldpc}) is then used to enable error correction, counteracting packet loss due to the harsh channel conditions.
 More recently, approaches that consider these coding mechanisms jointly have emerged, promising better performance than individual coding schemes \cite{6408177}.
-% Joint coding leverages the data-centric nature of the considered use case: the characteristics of the hyperspectral image sensor data is well known, and therefore, the image data can be translated directly into physical layer symbols rather than using separate source codes, channel codes, and modulation.
 Although Shannon's theory \cite{cover1991elements} states that separate optimization can yield optimal results, its assumptions, such as infinite code block lengths, are not always true in practice.
 
 Neuronal networks have provided a feasible way to implement such a joint coding approach, improving over earlier work, which was too complex to be useful in practice \cite{9838671}.
@@ -250,10 +244,8 @@ We conclude the paper in \Cref{sec:conclusion}.
 \section{Related Work}
 \label{sec:related_work}
 
-% Source and channel coding are two essential components of a communication system with obviously interdependent objectives. While the goal of source coding is to reduce the amount of data to be transmitted by eliminating redundancies, channel coding adds redundancies to protect the data against possible transmission errors.  
 Combining source and channel coding (\acs{jscc}) has been an active research topic over the last decades.
 A number of works compare \ac{jscc} to separate coding and investigate theoretical bounds for the achievable rates \cite{gallager1968information,1614076,4557472}
-%Gallager determined the lower bound for lossless \acs{jscc}~\cite{gallager1968information}. Zhong et al. provide a systematic comparison between \ac{jscc} and separate coding error exponents~\cite{1614076} and derive lower and upper bounds for the error exponent for asymmetric two-user source-channel system~\cite{4557472}.
 Apart from theoretical studies, various practical \ac{jscc} schemes have been proposed.
 Yu et al. use optimization techniques to jointly optimize source and channel coding parameters to minimize energy consumption~\cite{Wei2004}, and
 Xu et al. consider distributed \ac{jscc} for video transmission~\cite{4205066}. 
@@ -262,12 +254,10 @@ Recently, deep-learning-based methods have been successfully applied for source 
 Similarly, in the domain of channel coding, O'Shea et al. have demonstrated that performance close to Hamming codes can be achieved using an encoder-decoder architecture~\cite{8054694}. 
 Based on these results, the use of deep learning has been extended to \ac{jscc}.
 One of the first encoder-decoder architectures combining source coding, channel coding and modulation has been proposed by Bourtsoulatze et al.~\cite{Bourtsoulatze2019} and was later improved by a number of works \cite{Xuan2021,Kurka2021,yang2021_2}.
-% Later works addressed the limitations of this approach by considering such topics as correlated sources~\cite{Xuan2021}, progressive image transmission~\cite{Kurka2021} and adaptive rate control~\cite{yang2021_2}.
 Also, the use of attention modules has been proposed to dynamically adapt to different \ac{snr} levels~\cite{9438648}. 
 Furthermore, Kondrateva et al. proposed a JSCC encoder-decoder architecture suitable for transmission of satellite images \cite{satjscc}.
 In contrast to our approach, these works limit their consideration to simple channel models that do not take into account the specifics of satellite communication.
 
-% Since we consider small satellite communication, channel models for small satellites are also relevant for our research. 
 Although different communication technologies, such as VLC~\cite{nakajima2012} and laser~\cite{welle2018}, have been considered for small satellites, RF-based approaches remain predominant.
 Therefore, we briefly review channel models for satellite-to-ground RF-based communication.   
 Loo's model~\cite{1623307} combines log-normal and Rayleigh distributions to model the \ac{los} and multipath components, respectively.
@@ -275,8 +265,6 @@ Corazza-Vatalaro's model~\cite{Corazza1994ASM}, in contrast, uses the product of
 Various extensions for Loo's and Corazza-Vatalaro's models have been proposed~\cite{596315, 661055}.
 All these models are static in the sense that they use a single distribution to describe all propagation conditions.
 To model signal changes over time, dynamic models \cite{966585,4151152,7779114,8693582}, which are mostly based on Markov chains, can be used \cite{9079470}.
-% Fontan's model~\cite{966585} considers three states, which correspond to different degrees of shadowing.
-% Other examples for dynamic models include Scalise’s model~\cite{4151152}, Nikolaidis’ model~\cite{7779114} and Salamanca’s model~\cite{8693582}. A more detailed overview is provided in \cite{9079470}.
 For our evaluation we chose Fontán et al.'s model \cite{966585}, as it was tested for a broad range of frequencies in different environments and considers different elevation angles.
 
 
@@ -306,32 +294,6 @@ For our evaluation we chose Fontán et al.'s model \cite{966585}, as it was test
   \label{fig:sentinelii}
 \end{figure*}
 
-% \begin{table}
-%   \caption{\sentinelii Spectrum Bands}
-%   \label{tab:sentinel_bands}
-
-%   \centering
-%   \begin{tabular}{llcc}
-%     \toprule
-%     Band & Measurement & Central wavelength & Resolution \\
-%     \midrule
-%     1 & Coastal aerosol & 443 nm & 60 m \\
-%     2 & Blue & 490 nm & 10 m \\
-%     3 & Green & 560 nm & 10 m \\
-%     4 & Red & 665 nm & 10 m \\
-%     5 & Vegetation red edge & 705 nm & 20 m \\
-%     6 & Vegetation red edge & 740 nm & 20 m \\
-%     7 & Vegetation red edge & 783 nm & 20 m \\
-%     8 & Near infrared & 842 nm & 10 m \\
-%     8A & Narrow near infrared & 865 nm & 20 m \\
-%     9 & Water vapour & 940 nm & 60 m \\
-%     10 & Short wave infrared: cirrus & 1375 nm & 60 m \\
-%     11 & Short wave infrared & 1610 nm & 20 m \\
-%     12 & Short wave infrared & 2190 nm & 20 m \\
-%     \bottomrule
-%   \end{tabular}
-  
-% \end{table}
 
 With recent advances in space and image sensing technologies, Earth observation using small satellites has gained more and more attention over the past years.
 As an example use case for the methods we propose in this paper, we briefly introduce ESA's \sentinelii mission.
@@ -343,12 +305,8 @@ The first satellites were launched in 2015, with more launches following in 2017
 The missions comprise two satellites, which orbit the Earth such that each spot on the surface is revisited approximately every five days.
 With their sensors, they cover a strip of land that is 290 km wide with each pass.
 In addition to visible light sensors, the satellites are equipped with sensors that cover additional frequencies, such as infrared \cite{sentinel-2-user-handbook}, which allow to capture land use and vegetation.
-In total, the satellite images comprise information in 12 different bands. %(cf. \Cref{tab:sentinel_bands}).
+In total, the satellite images comprise information in 12 different bands.
 Moreover, the sensors feature relatively high optical resolutions between 10 and 60 meters.
-
-% https://www.esa.int/ESA_Multimedia/Images/2024/03/Earth_from_Space_Southeast_Kenya
-% https://www.esa.int/ESA_Multimedia/Images/2024/04/Saharan_dust_plume
-% https://www.esa.int/ESA_Multimedia/Images/2023/08/Wildfires_continue_to_rage_in_Greece
 
 \Cref{fig:sentinelii} shows three example use cases for Earth observation images taken from \ac{esa}'s homepage.
 The first (\Cref{fig:sentinel_kenya}) is a false-color image of southeast Kenya, which was generated by overlaying \sentinelii's near-infrared channel onto the visual spectrum.
@@ -404,7 +362,6 @@ We use an encoder-decoder neuronal network architecture based on \cite{satjscc} 
 During training, the encoder ($N_e$) and decoder ($N_d$) parts of the network are linked together using a realistic channel model for noisy satellite links.
 To better reflect the channel conditions, we replace the \ac{awgn} channel used in \cite{satjscc} with a more realistic Fontán et al.'s statistical channel model~\cite{966585}.
 The encoder-decoder model is then trained using an image dataset derived from the body of \sentinelii mission data.
-% The images within the dataset are used as model input and the reconstructed image's quality is used as reward metric.
 Normally, a separate model would need to be trained for each characteristic set of channel conditions \cite{satjscc}.
 In order to use a single network for a wide array of channel conditions, we augment the model with so-called attention modules \cite{wireless-attention-modules} as part of both the encoder and decoder during training.
 These essentially allow to parameterize the network during later operation to cater to changing channel conditions.
@@ -562,26 +519,6 @@ We simulate the Loo distribution as described in \cite{DBLP:journals/ijscn/Perez
 That is, to compute the multipath vector, we generate two series of normally distributed variables and multiply them with \MP.
 To compute the direct signal vector, we generate a series of normally distributed variables with mean $\alpha$ and standard deviation $\psi$, which we then convert to linear units and combine it with the multipath component using complex addition.
 Note that, in contrast to \cite{DBLP:journals/ijscn/Perez-FontanMMPMMR08}, we do not model Doppler spread since we assume that the receiver is stationary and we do not model Doppler shift since the variations caused by Doppler shift are typically slow and can be corrected at the receiver~\cite{DBLP:journals/ijscn/Perez-FontanMMPMMR08}. 
-% We simulate the Fontan's model as described in \cite{DBLP:journals/ijscn/Perez-FontanMMPMMR08} to obtain $h$.
-
-% \begin{equation}
-%   multipath = \MP \times \bigl[\mathcal{N}(0,1) + j * \mathcal{N}(0,1) \bigr] 
-% \end{equation}
-
-% \begin{equation}
-%   direct = \mathcal{N}(\alpha,\psi)
-% \end{equation}
-
-% \begin{equation}
-%   direct\_linear = 10^{\frac{direct}{20}}
-% \end{equation}
-
-% \begin{equation}
-%   h = direct\_linear + multipath
-% \end{equation}
-
-% To compute the multipath vector, we generate two series of normally distributed variables and multiply them by $MP$.
-% To compute the direct signal vector, we generate a series of normally distributed variables with mean $\alpha$ and standard deviation $\psi$, which we then convert to linear units. Finally, two series are added (complex addition). Note that we do not model Doppler spread since we assume that the receiver is stationary and we do not model Doppler shift since the variations caused by Doppler shift are typically slow and can be corrected at the receiver~\cite{DBLP:journals/ijscn/Perez-FontanMMPMMR08}. 
 
 Next, we consider the Gaussian noise $n$. We follow the approach presented in~\cite{satjscc}. 
 We first compute the typical \ac{snr} values. 
@@ -626,12 +563,6 @@ Finally, we compute the noise vector $n$ as follows:
 \begin{equation}
   n = \sigma \times \bigl[\mathcal{N}(0,1) + j * \mathcal{N}(0,1) \bigr] 
 \end{equation}
-%
-
-%TODO:
-% - z ersetzen weil doppelt
-% - r, b0, d0, z erklären
-% - Formel für h
 
 \section{Evaluation}
 \label{sec:evaluation}
